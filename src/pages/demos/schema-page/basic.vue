@@ -296,7 +296,7 @@ async function handleExport() {
       :table-columns="tableColumns"
       :api="fetchList"
       :search-collapsed-rows="1"
-      :search-action-span="8"
+      :search-action-span="6"
       row-key="id"
       :row-selection="{}"
       :toolbar="{

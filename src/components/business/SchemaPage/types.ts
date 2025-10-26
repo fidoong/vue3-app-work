@@ -9,8 +9,6 @@ import type { SchemaTableProps } from '../SchemaTable/types'
  * SchemaPage Props
  */
 export interface SchemaPageProps<T = any> extends Omit<SchemaTableProps<T>, 'columns' | 'params'> {
-  /** 页面标题 */
-  title?: string
   /** 搜索表单配置 */
   searchSchemas?: FormItemSchema[]
   /** 表格列配置 */
@@ -31,8 +29,11 @@ export interface SchemaPageProps<T = any> extends Omit<SchemaTableProps<T>, 'col
  * SchemaPage Emits
  */
 export interface SchemaPageEmits<T = any> {
+  /** 搜索事件 */
   (e: 'search', values: Record<string, any>): void
+  /** 刷新事件 */
   (e: 'refresh'): void
+  /** 选择变化事件 */
   (e: 'selectionChange', selectedRows: T[]): void
 }
 
@@ -40,11 +41,11 @@ export interface SchemaPageEmits<T = any> {
  * SchemaPage 实例方法
  */
 export interface SchemaPageInstance<T = any> {
-  /** 刷新表格 */
+  /** 刷新表格（保持当前页） */
   refresh: () => Promise<void>
-  /** 重新加载 */
+  /** 重新加载（回到第一页） */
   reload: () => Promise<void>
-  /** 重置 */
+  /** 重置搜索和表格 */
   reset: () => Promise<void>
   /** 获取表格数据 */
   getData: () => T[]
