@@ -13,6 +13,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
+import { refreshCurrentPage } from '~/utils/redirect'
 import { SchemaMenu } from '../SchemaMenu'
 import { useBreadcrumb, useTabs } from './composables'
 
@@ -70,10 +71,14 @@ function toggleFullscreen() {
 }
 
 /**
- * 刷新当前页面
+ * 刷新当前页面内容
  */
-function handleRefresh() {
-  router.go(0)
+async function handleRefresh() {
+  // 发送刷新事件，让父组件处理
+  emit('refresh')
+
+  // 使用工具函数刷新页面
+  await refreshCurrentPage(router)
 }
 
 /**

@@ -55,5 +55,6 @@ declare module 'vue-router/auto-routes' {
     '/demos/search-form/collapse': RouteRecordInfo<'/demos/search-form/collapse', '/demos/search-form/collapse', Record<never, never>, Record<never, never>>,
     '/demos/search-form/layout': RouteRecordInfo<'/demos/search-form/layout', '/demos/search-form/layout', Record<never, never>, Record<never, never>>,
     '/README': RouteRecordInfo<'/README', '/README', Record<never, never>, Record<never, never>>,
+    '/redirect': RouteRecordInfo<'/redirect', '/redirect', Record<never, never>, Record<never, never>>,
   }
 }

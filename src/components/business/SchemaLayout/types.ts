@@ -102,6 +102,8 @@ export interface SchemaLayoutEmits {
   (e: 'userMenuClick', key: string): void
   /** 退出登录 */
   (e: 'logout'): void
+  /** 刷新页面内容 */
+  (e: 'refresh'): void
 }
 
 /**

@@ -1,23 +1,38 @@
-<script setup lang="ts">
+<script lang="ts">
+import { Spin } from 'ant-design-vue'
+import { defineComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
+import { parseRedirect } from '~/utils/redirect'
 
-const router = useRouter()
-const route = router.currentRoute.value
+export default defineComponent({
+  name: 'RedirectPage',
+  components: {
+    ASpin: Spin,
+  },
+  setup() {
+    const router = useRouter()
 
-// 获取重定向路径和查询参数
-const { redirect, ...query } = route.query
-const redirectPath = (redirect as string) || '/'
+    onBeforeMount(() => {
+      const route = router.currentRoute.value
 
-// 立即重定向到目标路径
-router.replace({
-  path: redirectPath,
-  query: Object.keys(query).length > 0 ? query : undefined,
+      // 解析重定向信息
+      const { path, query } = parseRedirect(route)
+
+      // 立即重定向到目标路径
+      router.replace({
+        path,
+        query,
+      })
+    })
+
+    return {}
+  },
 })
 </script>
 
 <template>
   <div class="redirect-page">
-    <a-spin size="large" />
+    <ASpin size="large" />
   </div>
 </template>
 
