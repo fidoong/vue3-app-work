@@ -5,7 +5,8 @@ import { ViteSSG } from 'vite-ssg'
 import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
 
-import '@unocss/reset/tailwind.css'
+import { createModalPlugin } from './components/base/BaseModal'
+import '@unocss/reset/normalize.css'
 import './styles/main.css'
 import 'uno.css'
 
@@ -20,6 +21,13 @@ export const createApp = ViteSSG(
     // install all modules under `modules/`
     Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
       .forEach(i => i.install?.(ctx))
+
+    // 安装 BaseModal 插件
+    ctx.app.use(createModalPlugin({
+      debug: false,
+      containerClass: 'app-modal-container',
+    }))
+
     // ctx.app.use(Previewer)
   },
 )

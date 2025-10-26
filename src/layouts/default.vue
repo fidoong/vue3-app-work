@@ -1,12 +1,20 @@
+<script setup lang="ts">
+import { SchemaLayout } from '~/components/business/SchemaLayout'
+import { useLayoutConfig } from '~/composables/useLayoutConfig'
+
+const { menuItems, userInfo, handleLogout, handleUserMenuClick } = useLayoutConfig()
+</script>
+
 <template>
-  <main
-    px-4 py-10
-    text="center gray-700 dark:gray-200"
+  <SchemaLayout
+    :menu-items="menuItems"
+    :user-info="userInfo"
+    title="hw"
+    show-breadcrumb
+    show-tabs
+    @logout="handleLogout"
+    @user-menu-click="handleUserMenuClick"
   >
     <RouterView />
-    <TheFooter />
-    <div mx-auto mt-5 text-center text-sm opacity-50>
-      [Default Layout]
-    </div>
-  </main>
+  </SchemaLayout>
 </template>

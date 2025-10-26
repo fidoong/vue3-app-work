@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite-ssg build",
     "dev": "vite --port 3333 --open",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "preview": "vite preview",
     "preview-https": "serve dist",
     "test": "vitest",
@@ -20,6 +20,7 @@
     "@unhead/vue": "catalog:frontend",
     "@unocss/reset": "catalog:frontend",
     "@vueuse/core": "catalog:frontend",
+    "ant-design-vue": "catalog:frontend",
     "nprogress": "catalog:frontend",
     "pinia": "catalog:frontend",
     "vue": "catalog:frontend",
