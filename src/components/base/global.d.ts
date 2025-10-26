@@ -9,6 +9,7 @@ import type { ApiCheckboxGroupProps } from './ApiCheckboxGroup/types'
 import type { ApiRadioGroupProps } from './ApiRadioGroup/types'
 import type { ApiSelectProps } from './ApiSelect/types'
 import type { ApiTreeSelectProps } from './ApiTreeSelect/types'
+import type { TextEllipsisProps } from './TextEllipsis/types'
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -92,6 +93,22 @@ declare module 'vue' {
      * ```
      */
     ApiCheckboxGroup: DefineComponent<ApiCheckboxGroupProps>
+
+    /**
+     * TextEllipsis - 文本超出显示组件
+     *
+     * 支持单行/多行文本超出显示 tooltip，自动检测是否超出
+     *
+     * @example
+     * ```vue
+     * <!-- 单行文本超出 -->
+     * <TextEllipsis content="这是一段很长的文本" />
+     *
+     * <!-- 多行文本超出 -->
+     * <TextEllipsis :lines="3" content="这是一段很长的文本" />
+     * ```
+     */
+    TextEllipsis: DefineComponent<TextEllipsisProps>
   }
 }
 

@@ -61,6 +61,12 @@ declare module 'vue-router/auto-routes' {
     '/demos/search-form/basic': RouteRecordInfo<'/demos/search-form/basic', '/demos/search-form/basic', Record<never, never>, Record<never, never>>,
     '/demos/search-form/collapse': RouteRecordInfo<'/demos/search-form/collapse', '/demos/search-form/collapse', Record<never, never>, Record<never, never>>,
     '/demos/search-form/layout': RouteRecordInfo<'/demos/search-form/layout', '/demos/search-form/layout', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/': RouteRecordInfo<'/demos/text-ellipsis/', '/demos/text-ellipsis', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/basic': RouteRecordInfo<'/demos/text-ellipsis/basic', '/demos/text-ellipsis/basic', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/methods': RouteRecordInfo<'/demos/text-ellipsis/methods', '/demos/text-ellipsis/methods', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/README': RouteRecordInfo<'/demos/text-ellipsis/README', '/demos/text-ellipsis/README', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/table': RouteRecordInfo<'/demos/text-ellipsis/table', '/demos/text-ellipsis/table', Record<never, never>, Record<never, never>>,
+    '/demos/text-ellipsis/tooltip': RouteRecordInfo<'/demos/text-ellipsis/tooltip', '/demos/text-ellipsis/tooltip', Record<never, never>, Record<never, never>>,
     '/README': RouteRecordInfo<'/README', '/README', Record<never, never>, Record<never, never>>,
     '/redirect': RouteRecordInfo<'/redirect', '/redirect', Record<never, never>, Record<never, never>>,
   }

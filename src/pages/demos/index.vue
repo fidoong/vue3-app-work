@@ -73,6 +73,24 @@ const components = [
     count: 4,
     disabled: false,
   },
+  {
+    title: 'TextEllipsis',
+    description: '文本超出显示组件，支持单行/多行',
+    path: '/demos/text-ellipsis',
+    icon: 'i-carbon-text-align-left',
+    color: 'teal',
+    count: 4,
+    disabled: false,
+  },
+  {
+    title: 'DropdownButton',
+    description: '下拉按钮组件',
+    path: '/demos/dropdown-button',
+    icon: 'i-carbon-overflow-menu-horizontal',
+    color: 'lime',
+    count: 0,
+    disabled: true,
+  },
 ]
 
 function navigateTo(path: string) {

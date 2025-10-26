@@ -1,5 +1,6 @@
 import type { MenuItemSchema, UserInfo } from '~/components/business/SchemaLayout/types'
 import {
+  AlignLeftOutlined,
   AppstoreOutlined,
   DashboardOutlined,
   FileOutlined,
@@ -199,6 +200,33 @@ export function useLayoutConfig() {
           key: 'schema-page-custom-render',
           title: '自定义渲染',
           path: '/demos/schema-page/custom-render',
+        },
+      ],
+    },
+    {
+      key: 'text-ellipsis',
+      title: 'TextEllipsis 文本超出',
+      icon: AlignLeftOutlined,
+      children: [
+        {
+          key: 'text-ellipsis-basic',
+          title: '基础用法',
+          path: '/demos/text-ellipsis/basic',
+        },
+        {
+          key: 'text-ellipsis-tooltip',
+          title: 'Tooltip 配置',
+          path: '/demos/text-ellipsis/tooltip',
+        },
+        {
+          key: 'text-ellipsis-table',
+          title: '表格中使用',
+          path: '/demos/text-ellipsis/table',
+        },
+        {
+          key: 'text-ellipsis-methods',
+          title: '实例方法',
+          path: '/demos/text-ellipsis/methods',
         },
       ],
     },
