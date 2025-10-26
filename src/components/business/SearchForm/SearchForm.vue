@@ -77,7 +77,7 @@ defineExpose({
     <!-- 操作按钮插槽 -->
     <template #searchActions>
       <div class="search-actions">
-        <a-space :size="8">
+        <a-space :size="6">
           <a-button
             type="primary"
             :loading="loading"
@@ -88,18 +88,17 @@ defineExpose({
           <a-button @click="handleReset">
             重置
           </a-button>
-          <a-button
-            v-if="showExpandButton"
-            type="link"
-            @click="toggleExpand"
-          >
-            {{ expanded ? '收起' : '展开' }}
-            <span
-              :class="expanded ? 'i-carbon-chevron-up' : 'i-carbon-chevron-down'"
-              class="ml-1"
-            />
-          </a-button>
         </a-space>
+        <a-button
+          v-if="showExpandButton"
+          type="link"
+          @click="toggleExpand"
+        >
+          <span
+            :class="expanded ? 'i-carbon-chevron-up' : 'i-carbon-chevron-down'"
+            class="ml-1"
+          />
+        </a-button>
       </div>
     </template>
 
@@ -140,11 +139,14 @@ defineExpose({
 <style scoped>
 .search-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
 }
 
 .search-actions-footer {
   display: flex;
-  justify-content: center;
+  justify-content: end;
 }
 </style>

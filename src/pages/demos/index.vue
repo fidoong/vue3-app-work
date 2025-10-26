@@ -29,6 +29,15 @@ const components = [
     disabled: false,
   },
   {
+    title: 'SchemaPage',
+    description: '完整的 CRUD 页面组件，集成搜索、表格和弹窗',
+    path: '/demos/schema-page',
+    icon: 'i-carbon-application',
+    color: 'indigo',
+    count: 1,
+    disabled: false,
+  },
+  {
     title: 'SchemaLayout',
     description: '后台布局组件',
     path: '/demos/schema-layout',

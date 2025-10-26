@@ -4,6 +4,7 @@
 
 import type { ButtonConfig, FixedType } from '../../../shared/types'
 import type { TableColumnSchema } from '../types'
+import { Button, Popconfirm, Space } from 'ant-design-vue'
 import { resolveDynamicValue } from '../../../shared/utils'
 
 export interface UseTableActionsReturn<T = any> {
@@ -42,58 +43,75 @@ export function useTableActions<T = any>(
         })
 
         return h(
-          'a-space',
+          Space,
           { size: 8 },
-          visibleActions.map((action) => {
-            const disabled = resolveDynamicValue(action.disabled, record, false)
-            const props = resolveDynamicValue(action.props, record, {})
+          {
+            default: () => visibleActions.map((action) => {
+              const disabled = resolveDynamicValue(action.disabled, record, false)
+              const props = resolveDynamicValue(action.props, record, {})
 
-            const buttonProps = {
-              type: action.type || 'link',
-              danger: action.danger,
-              disabled,
-              size: 'small',
-              ...props,
-            }
+              const buttonProps: any = {
+                type: action.type || 'link',
+                danger: action.danger,
+                disabled,
+                size: 'small',
+                ...props,
+              }
 
-            // 如果有确认配置
-            if (action.confirm) {
+              // 如果有确认配置
+              if (action.confirm) {
+                return h(
+                  Popconfirm,
+                  {
+                    title: action.confirm.title || '确认执行此操作？',
+                    description: action.confirm.content,
+                    onConfirm: (e: Event) => {
+                      e?.stopPropagation()
+                      action.confirm?.onConfirm?.(record, index)
+                    },
+                    onCancel: (e: Event) => {
+                      e?.stopPropagation()
+                    },
+                  },
+                  {
+                    default: () => h(
+                      Button,
+                      {
+                        ...buttonProps,
+                        onClick: (e: Event) => {
+                          e.stopPropagation()
+                        },
+                      },
+                      {
+                        default: () => [
+                          action.icon ? h(action.icon) : null,
+                          action.text,
+                        ],
+                      },
+                    ),
+                  },
+                )
+              }
+
+              // 普通按钮
               return h(
-                'a-popconfirm',
+                Button,
                 {
-                  title: action.confirm.title || '确认执行此操作？',
-                  onConfirm: () => action.confirm?.onConfirm?.(record, index),
+                  ...buttonProps,
+                  onClick: (e: Event) => {
+                    e.stopPropagation()
+                    action.onClick?.(record, index)
+                  },
                 },
                 {
-                  default: () => h(
-                    'a-button',
-                    buttonProps,
-                    {
-                      default: () => [
-                        action.icon ? h(action.icon) : null,
-                        action.text,
-                      ],
-                    },
-                  ),
+                  default: () => [
+                    action.icon ? h(action.icon) : null,
+                    action.text,
+                  ],
                 },
               )
-            }
-
-            // 普通按钮
-            return h(
-              'a-button',
-              {
-                ...buttonProps,
-                onClick: () => action.onClick?.(record, index),
-              },
-              {
-                default: () => [
-                  action.icon ? h(action.icon) : null,
-                  action.text,
-                ],
-              },
-            )
-          }),
+            }),
+          },
         )
       },
     }

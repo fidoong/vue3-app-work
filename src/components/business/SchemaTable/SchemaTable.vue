@@ -209,6 +209,22 @@ defineExpose({
   clearSelection,
 })
 
+// 监听 params 变化
+watch(
+  () => props.params,
+  (newParams) => {
+    if (newParams) {
+      setParams(newParams)
+      if (props.api) {
+        loadData().catch((error) => {
+          emit('error', error)
+        })
+      }
+    }
+  },
+  { deep: true },
+)
+
 // 初始化
 onMounted(() => {
   if (props.immediate && props.api) {
