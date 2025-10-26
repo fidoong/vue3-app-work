@@ -110,7 +110,7 @@ defineExpose<SchemaPageInstance<T>>({
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .schema-page {
   display: flex;
   flex-direction: column;

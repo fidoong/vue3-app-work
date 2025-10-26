@@ -182,7 +182,7 @@ function renderDropdownButton() {
   <component :is="renderDropdownButton()" />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 :deep(.ant-dropdown-menu-item),
 :deep(.ant-dropdown-menu-submenu-title) {
   display: flex;

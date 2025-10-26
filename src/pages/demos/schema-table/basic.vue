@@ -186,7 +186,7 @@ const dataSource = [
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

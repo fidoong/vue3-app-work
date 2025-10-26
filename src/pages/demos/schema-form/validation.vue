@@ -262,7 +262,7 @@ async function handleValidateField(field: string) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

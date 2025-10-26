@@ -591,7 +591,7 @@ const moreActions: DropdownMenuItem[] = [
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

@@ -113,7 +113,7 @@ function handleCancel() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .form-modal {
   padding: 24px;
 }

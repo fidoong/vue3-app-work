@@ -136,17 +136,17 @@ defineExpose({
   </SchemaForm>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .search-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   min-height: 32px;
-}
 
-.search-actions-footer {
-  display: flex;
-  justify-content: end;
+  &-footer {
+    display: flex;
+    justify-content: end;
+  }
 }
 </style>

@@ -209,7 +209,7 @@ async function handleEdit(record) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

@@ -211,7 +211,7 @@ function goBack() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-page {
   padding: 24px;
   max-width: 1400px;

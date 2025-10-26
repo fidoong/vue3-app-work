@@ -176,60 +176,69 @@ watch(() => route.path, (newPath) => {
         left: 0,
         top: 0,
         bottom: 0,
-        display: 'flex',
-        flexDirection: 'column',
       }"
     >
-      <!-- Logo 和标题 -->
       <div
-        class="layout-logo"
-        :class="{ 'layout-logo-dark': theme === 'dark' }"
-      >
-        <component
-          :is="logo"
-          v-if="logo && typeof logo !== 'string'"
-          class="layout-logo-icon"
-        />
-        <img
-          v-else-if="logo"
-          :src="logo"
-          alt="logo"
-          class="layout-logo-icon"
-        >
-        <transition name="fade">
-          <span
-            v-if="!internalCollapsed"
-            class="layout-title"
-            :class="{ 'layout-title-dark': theme === 'dark' }"
-          >{{
-            title }}</span>
-        </transition>
-      </div>
-
-      <!-- 菜单 -->
-      <div
+        class="layout-sider-content"
         :style="{
-          flex: 1,
-          overflow: 'auto',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }"
       >
-        <SchemaMenu
-          :items="menuItems"
-          :theme="theme"
-          mode="inline"
-          :collapsed="internalCollapsed"
-          @select="handleMenuSelect"
-        />
-      </div>
+        <!-- Logo 和标题 -->
+        <div
+          class="layout-logo"
+          :class="{ 'layout-logo-dark': theme === 'dark' }"
+        >
+          <component
+            :is="logo"
+            v-if="logo && typeof logo !== 'string'"
+            class="layout-logo-icon"
+          />
+          <img
+            v-else-if="logo"
+            :src="logo"
+            alt="logo"
+            class="layout-logo-icon"
+          >
+          <transition name="fade">
+            <span
+              v-if="!internalCollapsed"
+              class="layout-title"
+              :class="{ 'layout-title-dark': theme === 'dark' }"
+            >{{
+              title }}</span>
+          </transition>
+        </div>
 
-      <!-- 折叠按钮 -->
-      <div
-        class="layout-trigger"
-        :class="{ 'layout-trigger-dark': theme === 'dark' }"
-        @click="toggleCollapsed"
-      >
-        <MenuFoldOutlined v-if="!internalCollapsed" />
-        <MenuUnfoldOutlined v-else />
+        <!-- 菜单 -->
+        <div
+          class="layout-menu-container"
+          :style="{
+            flex: 1,
+            overflow: 'auto',
+            overflowX: 'hidden',
+            minHeight: 0,
+          }"
+        >
+          <SchemaMenu
+            :items="menuItems"
+            :theme="theme"
+            mode="inline"
+            @select="handleMenuSelect"
+          />
+        </div>
+
+        <!-- 折叠按钮 -->
+        <div
+          class="layout-trigger"
+          :class="{ 'layout-trigger-dark': theme === 'dark' }"
+          @click="toggleCollapsed"
+        >
+          <MenuFoldOutlined v-if="!internalCollapsed" />
+          <MenuUnfoldOutlined v-else />
+        </div>
       </div>
     </a-layout-sider>
 
@@ -437,15 +446,17 @@ watch(() => route.path, (newPath) => {
           margin: fixedHeader ? (showTabs ? '104px 0 0' : '64px 0 0') : '0',
           padding: '16px',
           background: '#f0f2f5',
-          minHeight: showTabs ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+          height: showTabs ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+          overflow: 'auto',
         }"
       >
         <div
+          class="layout-content-inner"
           :style="{
             padding: '24px',
             background: '#fff',
             borderRadius: '8px',
-            minHeight: showTabs ? 'calc(100vh - 136px)' : 'calc(100vh - 96px)',
+            minHeight: '100%',
           }"
         >
           <slot />
@@ -474,220 +485,6 @@ watch(() => route.path, (newPath) => {
   </a-layout>
 </template>
 
-<style scoped>
-.schema-layout {
-  width: 100%;
-  height: 100%;
-}
-
-.layout-logo {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  padding: 0 24px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.layout-logo-dark {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-.layout-logo-icon {
-  height: 32px;
-  width: 32px;
-  flex-shrink: 0;
-  transition: transform 0.3s;
-}
-
-.layout-logo:hover .layout-logo-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.layout-title {
-  font-size: 18px;
-  font-weight: 600;
-  white-space: nowrap;
-  color: rgba(0, 0, 0, 0.85);
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-}
-
-.layout-title-dark {
-  color: #fff;
-}
-
-/* Fade 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Tabs 样式优化 */
-.layout-tabs {
-  box-shadow: none;
-}
-
-.layout-tabs :deep(.ant-tabs) {
-  flex: 1;
-}
-
-.layout-tabs :deep(.ant-tabs-nav) {
-  margin: 0;
-  padding: 0;
-  height: 40px;
-}
-
-.layout-tabs :deep(.ant-tabs-nav::before) {
-  border: none;
-}
-
-.layout-tabs :deep(.ant-tabs-nav-wrap) {
-  display: flex;
-  align-items: center;
-}
-
-.layout-tabs :deep(.ant-tabs-nav-list) {
-  display: flex;
-  align-items: center;
-}
-
-.layout-tabs :deep(.ant-tabs-tab) {
-  border: 1px solid transparent;
-  background: transparent;
-  margin: 0 2px 0 0;
-  padding: 0 12px;
-  height: 32px;
-  line-height: 32px;
-  border-radius: 4px;
-  transition: all 0.3s;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-}
-
-.layout-tabs :deep(.ant-tabs-tab:hover) {
-  background: #fff;
-  color: #1890ff;
-}
-
-.layout-tabs :deep(.ant-tabs-tab-active) {
-  background: #fff;
-  border-color: #d9d9d9;
-  color: #1890ff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-}
-
-.layout-tabs :deep(.ant-tabs-tab-active .ant-tabs-tab-btn) {
-  color: #1890ff;
-  font-weight: 500;
-}
-
-.layout-tabs :deep(.ant-tabs-tab-remove) {
-  margin-left: 6px;
-  margin-right: -4px;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.45);
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-}
-
-.layout-tabs :deep(.ant-tabs-tab-remove:hover) {
-  color: #ff4d4f;
-}
-
-.layout-tabs :deep(.ant-tabs-tab .ant-tabs-tab-btn) {
-  display: flex;
-  align-items: center;
-}
-
-.layout-tabs :deep(.ant-tabs-ink-bar) {
-  display: none;
-}
-
-.tab-title {
-  display: flex;
-  align-items: center;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  user-select: none;
-  line-height: 1;
-}
-
-.layout-trigger {
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  border-top: 1px solid #f0f0f0;
-  background: #fff;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 18px;
-}
-
-.layout-trigger:hover {
-  background: #f0f0f0;
-  color: #1890ff;
-}
-
-.layout-trigger-dark {
-  background: #001529;
-  border-top-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.layout-trigger-dark:hover {
-  background: #1890ff;
-  color: #fff;
-}
-
-.breadcrumb-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.layout-breadcrumb {
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.layout-breadcrumb :deep(li) {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0 !important;
-  bottom: auto !important;
-}
-
-.layout-breadcrumb :deep(.ant-breadcrumb-separator) {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0 !important;
-}
-
-.breadcrumb-link,
-.breadcrumb-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.breadcrumb-icon {
-  font-size: 14px;
-}
+<style scoped lang="scss">
+@import './SchemaLayout.scss';
 </style>

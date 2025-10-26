@@ -343,7 +343,7 @@ async function handleExport() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .mb-4 {
   margin-bottom: 16px;
 }

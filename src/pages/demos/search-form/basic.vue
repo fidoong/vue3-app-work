@@ -143,7 +143,7 @@ function handleSearch(values: Record&lt;string, any&gt;) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

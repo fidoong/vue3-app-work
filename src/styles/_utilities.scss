@@ -360,3 +360,76 @@ $directions: (
 .select-all {
   user-select: all;
 }
+
+// ========== 滚动条样式 ==========
+// 自定义滚动条 mixin
+@mixin custom-scrollbar($width: 8px, $thumb-color: rgba(0, 0, 0, 0.15), $thumb-hover-color: rgba(0, 0, 0, 0.25)) {
+  scrollbar-width: thin;
+  scrollbar-color: $thumb-color transparent;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: calc($width / 2);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $thumb-hover-color;
+    border-width: 1px;
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: darken($thumb-hover-color, 10%);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+// 滚动条工具类
+.scrollbar-thin {
+  @include custom-scrollbar(6px);
+}
+
+.scrollbar-default {
+  @include custom-scrollbar(8px);
+}
+
+.scrollbar-thick {
+  @include custom-scrollbar(12px);
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 暗色滚动条
+.scrollbar-dark {
+  @include custom-scrollbar(8px, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3));
+}
+
+// 平滑滚动
+.scroll-smooth {
+  scroll-behavior: smooth;
+}

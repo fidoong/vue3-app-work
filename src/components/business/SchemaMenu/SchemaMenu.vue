@@ -183,7 +183,7 @@ defineExpose({
   <a-menu
     :mode="mode"
     :theme="theme"
-    :inline-collapsed="collapsed"
+    :inline-collapsed="collapsible && mode === 'inline' ? collapsed : undefined"
     :inline-indent="inlineIndent"
     :selected-keys="selectedKeys.map(k => `item-${k}`)"
     :open-keys="openKeys.map(k => `submenu-${k}`)"

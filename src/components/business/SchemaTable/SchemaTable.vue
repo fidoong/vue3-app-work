@@ -350,34 +350,35 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .schema-table {
   width: 100%;
+
+  // 斑马纹样式
+  :deep(.table-striped) {
+    background-color: #fafafa;
+  }
+
+  :deep(.ant-table-tbody > tr.table-striped:hover > td) {
+    background-color: #f5f5f5;
+  }
+
+  // 工具栏
+  &-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
 }
 
-.schema-table-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
+.toolbar {
+  &-left {
+    flex: 1;
+  }
 
-.toolbar-left {
-  flex: 1;
-}
-
-.toolbar-right {
-  flex-shrink: 0;
-}
-</style>
-
-<style>
-/* 斑马纹样式 */
-.schema-table :deep(.table-striped) {
-  background-color: #fafafa;
-}
-
-.schema-table :deep(.ant-table-tbody > tr.table-striped:hover > td) {
-  background-color: #f5f5f5;
+  &-right {
+    flex-shrink: 0;
+  }
 }
 </style>

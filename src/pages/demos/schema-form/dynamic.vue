@@ -212,7 +212,7 @@ function handleSubmit(_values: Record<string, any>) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
 }

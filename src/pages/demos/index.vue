@@ -185,7 +185,7 @@ function navigateTo(path: string) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .demo-container {
   padding: 24px;
   max-width: 1400px;

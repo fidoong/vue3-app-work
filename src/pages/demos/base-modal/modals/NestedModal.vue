@@ -123,7 +123,7 @@ function handleCancel() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .nested-modal {
   padding: 24px;
 }
