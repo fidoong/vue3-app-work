@@ -201,7 +201,8 @@ watch(() => route.path, (newPath) => {
             v-if="!internalCollapsed"
             class="layout-title"
             :class="{ 'layout-title-dark': theme === 'dark' }"
-          >{{ title }}</span>
+          >{{
+            title }}</span>
         </transition>
       </div>
 
@@ -255,9 +256,12 @@ watch(() => route.path, (newPath) => {
           boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)',
         }"
       >
-        <div style="display: flex; align-items: center; gap: 16px">
+        <div class="breadcrumb-container">
           <!-- 面包屑 -->
-          <a-breadcrumb v-if="showBreadcrumb">
+          <a-breadcrumb
+            v-if="showBreadcrumb"
+            class="layout-breadcrumb"
+          >
             <a-breadcrumb-item
               v-for="item in breadcrumbs"
               :key="item.path || item.title"
@@ -265,19 +269,23 @@ watch(() => route.path, (newPath) => {
               <router-link
                 v-if="item.path"
                 :to="item.path"
+                class="breadcrumb-link"
               >
                 <component
                   :is="item.icon"
                   v-if="item.icon"
-                  style="margin-right: 4px"
+                  class="breadcrumb-icon"
                 />
                 {{ item.title }}
               </router-link>
-              <span v-else>
+              <span
+                v-else
+                class="breadcrumb-text"
+              >
                 <component
                   :is="item.icon"
                   v-if="item.icon"
-                  style="margin-right: 4px"
+                  class="breadcrumb-icon"
                 />
                 {{ item.title }}
               </span>
@@ -645,5 +653,41 @@ watch(() => route.path, (newPath) => {
 .layout-trigger-dark:hover {
   background: #1890ff;
   color: #fff;
+}
+
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.layout-breadcrumb {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.layout-breadcrumb :deep(li) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+  bottom: auto !important;
+}
+
+.layout-breadcrumb :deep(.ant-breadcrumb-separator) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+}
+
+.breadcrumb-link,
+.breadcrumb-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb-icon {
+  font-size: 14px;
 }
 </style>
