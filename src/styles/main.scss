@@ -1,0 +1,166 @@
+/**
+ * 主样式入口
+ * 按顺序导入所有样式文件
+ */
+
+// 1. 变量和 Mixins
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// 2. 基础样式
+@use 'base';
+
+// 3. 工具类
+@use 'utilities';
+
+// 4. 组件样式增强
+@use 'components';
+
+// 5. Markdown 样式
+@import './markdown.css';
+
+/* ========== 应用根元素 ========== */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== 暗色模式 ========== */
+html.dark {
+  background: var(--color-bg-base);
+  color-scheme: dark;
+}
+
+/* ========== 进度条样式 ========== */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--color-primary);
+  opacity: 0.75;
+  position: fixed;
+  z-index: var(--z-index-notification);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  box-shadow:
+    0 0 10px var(--color-primary),
+    0 0 5px var(--color-primary);
+  transition: opacity var(--transition-base) var(--ease-in-out);
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  box-shadow:
+    0 0 10px var(--color-primary),
+    0 0 5px var(--color-primary);
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* ========== 性能优化 ========== */
+
+/* 全局弹窗动画优化 */
+.ant-modal-mask {
+  backdrop-filter: blur(0); /* 避免模糊效果导致的性能问题 */
+  background-color: var(--color-bg-mask);
+}
+
+/* 优化所有弹窗的渲染性能 */
+.ant-modal-wrap {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* 减少弹窗动画时的重绘 */
+.ant-modal {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* 优化表单元素的渲染 */
+input,
+textarea,
+select {
+  contain: layout style;
+}
+
+/* ========== 页面容器 ========== */
+.page-container {
+  padding: var(--spacing-xxl);
+  background-color: var(--color-bg-layout);
+  min-height: calc(100vh - 64px);
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xxl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.page-title {
+  font-size: var(--font-size-xxl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.page-description {
+  margin-top: var(--spacing-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.page-content {
+  background-color: var(--color-bg-container);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xxl);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ========== 响应式布局 ========== */
+@media (max-width: 768px) {
+  .page-container {
+    padding: var(--spacing-lg);
+  }
+
+  .page-content {
+    padding: var(--spacing-lg);
+  }
+
+  .page-title {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ========== 打印样式 ========== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .page-container {
+    padding: 0;
+  }
+
+  .page-content {
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+  }
+}

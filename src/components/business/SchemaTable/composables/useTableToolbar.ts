@@ -5,6 +5,7 @@
 import type { Ref, VNode } from 'vue'
 import type { ButtonConfig } from '../../../shared/types'
 import type { ToolbarConfig } from '../types'
+import { Button, Popconfirm, Space } from 'ant-design-vue'
 import { resolveDynamicValue } from '../../../shared/utils'
 
 export interface UseTableToolbarReturn {
@@ -43,23 +44,30 @@ export function useTableToolbar<T = any>(
       ...props,
     }
 
+    // 按钮内容
+    const buttonContent = () => {
+      const content = []
+      if (button.icon) {
+        content.push(h(button.icon, { class: 'mr-1', style: { display: 'inline-flex', alignItems: 'center' } }))
+      }
+      content.push(button.text)
+      return content
+    }
+
     // 如果有确认配置
     if (button.confirm) {
       return h(
-        'a-popconfirm',
+        Popconfirm,
         {
           title: button.confirm.title || '确认执行此操作？',
           onConfirm: () => button.confirm?.onConfirm?.(selectedRows.value),
         },
         {
           default: () => h(
-            'a-button',
+            Button,
             buttonProps,
             {
-              default: () => [
-                button.icon ? h(button.icon) : null,
-                button.text,
-              ],
+              default: buttonContent,
             },
           ),
         },
@@ -68,16 +76,13 @@ export function useTableToolbar<T = any>(
 
     // 普通按钮
     return h(
-      'a-button',
+      Button,
       {
         ...buttonProps,
         onClick: () => button.onClick?.(selectedRows.value),
       },
       {
-        default: () => [
-          button.icon ? h(button.icon) : null,
-          button.text,
-        ],
+        default: buttonContent,
       },
     )
   }
@@ -123,9 +128,11 @@ export function useTableToolbar<T = any>(
           'div',
           { class: 'toolbar-left' },
           h(
-            'a-space',
+            Space,
             { size: 8 },
-            leftButtons.map(button => renderButton(button)).filter(Boolean),
+            {
+              default: () => leftButtons.map(button => renderButton(button)).filter(Boolean),
+            },
           ),
         ),
         // 右侧按钮
@@ -133,9 +140,11 @@ export function useTableToolbar<T = any>(
           'div',
           { class: 'toolbar-right' },
           h(
-            'a-space',
+            Space,
             { size: 8 },
-            allRightButtons.map(button => renderButton(button)).filter(Boolean),
+            {
+              default: () => allRightButtons.map(button => renderButton(button)).filter(Boolean),
+            },
           ),
         ),
       ],

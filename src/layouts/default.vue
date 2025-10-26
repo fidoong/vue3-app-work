@@ -9,7 +9,7 @@ const { menuItems, userInfo, handleLogout, handleUserMenuClick } = useLayoutConf
   <SchemaLayout
     :menu-items="menuItems"
     :user-info="userInfo"
-    title="hw"
+    title="Vue3 组件库"
     show-breadcrumb
     show-tabs
     @logout="handleLogout"

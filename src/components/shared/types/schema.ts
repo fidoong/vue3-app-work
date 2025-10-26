@@ -49,7 +49,9 @@ export interface FormItemRenderContext {
 /**
  * 表单项配置
  */
-export interface FormItemSchema extends BaseSchema {
+export interface FormItemSchema extends Omit<BaseSchema, 'key'> {
+  /** 唯一标识 */
+  key?: string
   /** 字段名 */
   field: string
   /** 标签 */
@@ -66,8 +68,12 @@ export interface FormItemSchema extends BaseSchema {
   colProps?: ColProps
   /** 组件类型 */
   type?: FormComponentType
-  /** 自定义组件 */
-  component?: Component
+  /** 自定义组件（支持组件实例或字符串名称） */
+  component?: Component | string
+  /** 组件属性 */
+  componentProps?: Record<string, any>
+  /** 是否显示（支持响应式） */
+  show?: any
   /** 自定义渲染函数 */
   render?: RenderFunction<FormItemRenderContext>
   /** 自定义插槽名称 */

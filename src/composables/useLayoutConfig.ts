@@ -1,10 +1,11 @@
 import type { MenuItemSchema, UserInfo } from '~/components/business/SchemaLayout/types'
 import {
+  AppstoreOutlined,
   DashboardOutlined,
   FormOutlined,
-  SettingOutlined,
+  SearchOutlined,
   TableOutlined,
-  UserOutlined,
+  WindowsOutlined,
 } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
@@ -16,56 +17,139 @@ export function useLayoutConfig() {
   // 菜单配置
   const menuItems: MenuItemSchema[] = [
     {
-      key: 'dashboard',
-      title: '仪表盘',
+      key: 'home',
+      title: '首页',
       icon: DashboardOutlined,
       path: '/',
     },
     {
-      key: 'table',
-      title: '表格示例',
-      icon: TableOutlined,
-      path: '/table',
+      key: 'demos',
+      title: '组件示例',
+      icon: AppstoreOutlined,
+      path: '/demos',
     },
     {
-      key: 'form',
-      title: '表单示例',
+      key: 'schema-form',
+      title: 'SchemaForm 表单',
       icon: FormOutlined,
       children: [
         {
-          key: 'basic-form',
+          key: 'schema-form-basic',
           title: '基础表单',
-          path: '/form/basic',
+          path: '/demos/schema-form/basic',
         },
         {
-          key: 'advanced-form',
-          title: '高级表单',
-          path: '/form/advanced',
+          key: 'schema-form-layout',
+          title: '表单布局',
+          path: '/demos/schema-form/layout',
+        },
+        {
+          key: 'schema-form-dynamic',
+          title: '动态表单',
+          path: '/demos/schema-form/dynamic',
+        },
+        {
+          key: 'schema-form-custom',
+          title: '自定义渲染',
+          path: '/demos/schema-form/custom',
+        },
+        {
+          key: 'schema-form-validation',
+          title: '表单验证',
+          path: '/demos/schema-form/validation',
+        },
+        {
+          key: 'schema-form-async',
+          title: '异步数据',
+          path: '/demos/schema-form/async',
         },
       ],
     },
     {
-      key: 'user',
-      title: '用户管理',
-      icon: UserOutlined,
+      key: 'search-form',
+      title: 'SearchForm 搜索',
+      icon: SearchOutlined,
       children: [
         {
-          key: 'user-list',
-          title: '用户列表',
-          path: '/users',
+          key: 'search-form-basic',
+          title: '基础用法',
+          path: '/demos/search-form/basic',
         },
         {
-          key: 'user-roles',
-          title: '角色管理',
-          path: '/roles',
+          key: 'search-form-collapse',
+          title: '展开收起',
+          path: '/demos/search-form/collapse',
+        },
+        {
+          key: 'search-form-advanced',
+          title: '高级搜索',
+          path: '/demos/search-form/advanced',
+        },
+        {
+          key: 'search-form-layout',
+          title: '布局方式',
+          path: '/demos/search-form/layout',
         },
       ],
     },
     {
-      key: 'settings',
-      title: '系统设置',
-      icon: SettingOutlined,
-      path: '/settings',
+      key: 'base-modal',
+      title: 'BaseModal 弹窗',
+      icon: WindowsOutlined,
+      children: [
+        {
+          key: 'base-modal-basic',
+          title: '基础用法',
+          path: '/demos/base-modal/basic',
+        },
+        {
+          key: 'base-modal-async',
+          title: '异步加载',
+          path: '/demos/base-modal/async',
+        },
+        {
+          key: 'base-modal-nested',
+          title: '嵌套弹窗',
+          path: '/demos/base-modal/nested',
+        },
+        {
+          key: 'base-modal-form',
+          title: '表单弹窗',
+          path: '/demos/base-modal/form',
+        },
+      ],
+    },
+    {
+      key: 'schema-table',
+      title: 'SchemaTable 表格',
+      icon: TableOutlined,
+      children: [
+        {
+          key: 'schema-table-basic',
+          title: '基础表格',
+          path: '/demos/schema-table/basic',
+        },
+        {
+          key: 'schema-table-api',
+          title: 'API 数据',
+          path: '/demos/schema-table/api',
+        },
+        {
+          key: 'schema-table-toolbar',
+          title: '工具栏',
+          path: '/demos/schema-table/toolbar',
+        },
+        {
+          key: 'schema-table-actions',
+          title: '操作列',
+          path: '/demos/schema-table/actions',
+        },
+        {
+          key: 'schema-table-advanced',
+          title: '高级功能',
+          path: '/demos/schema-table/advanced',
+        },
+      ],
     },
   ]
 

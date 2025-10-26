@@ -19,7 +19,7 @@ export type RenderFunction<Context = any> = (context: Context) => VNode | string
  */
 export interface BaseSchema {
   /** 唯一标识 */
-  key: string
+  key?: string
   /** 是否禁用 */
   disabled?: DynamicValue<boolean>
   /** 是否隐藏 */

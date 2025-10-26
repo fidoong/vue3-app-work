@@ -7,7 +7,7 @@ import App from './App.vue'
 
 import { createModalPlugin } from './components/base/BaseModal'
 import '@unocss/reset/normalize.css'
-import './styles/main.css'
+import './styles/main.scss'
 import 'uno.css'
 
 // https://github.com/antfu/vite-ssg

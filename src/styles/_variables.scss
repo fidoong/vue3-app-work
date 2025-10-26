@@ -1,0 +1,194 @@
+/**
+ * Sass 变量和 CSS 变量定义
+ * 统一管理颜色、间距、字体等设计 token
+ */
+
+// ========== Sass 变量 ==========
+// 这些变量用于 Sass 编译时计算
+
+// 颜色
+$primary: #1890ff;
+$success: #52c41a;
+$warning: #faad14;
+$error: #ff4d4f;
+$info: #1890ff;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-xxl: 24px;
+$spacing-xxxl: 32px;
+
+// 字体
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 14px;
+$font-size-lg: 16px;
+$font-size-xl: 20px;
+$font-size-xxl: 24px;
+
+// 圆角
+$border-radius-sm: 2px;
+$border-radius-base: 6px;
+$border-radius-lg: 8px;
+$border-radius-xl: 12px;
+
+// 过渡时间
+$transition-fast: 0.1s;
+$transition-base: 0.2s;
+$transition-slow: 0.3s;
+
+// 断点
+$breakpoint-xs: 576px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+$breakpoint-xl: 1600px;
+
+// ========== CSS 变量（支持运行时切换） ==========
+:root {
+  /* 颜色系统 */
+
+  /* 主色 */
+  --color-primary: #{$primary};
+  --color-primary-hover: #40a9ff;
+  --color-primary-active: #096dd9;
+  --color-primary-light: #e6f7ff;
+
+  /* 成功色 */
+  --color-success: #{$success};
+  --color-success-hover: #73d13d;
+  --color-success-light: #f6ffed;
+
+  /* 警告色 */
+  --color-warning: #{$warning};
+  --color-warning-hover: #ffc53d;
+  --color-warning-light: #fffbe6;
+
+  /* 错误色 */
+  --color-error: #{$error};
+  --color-error-hover: #ff7875;
+  --color-error-light: #fff2f0;
+
+  /* 信息色 */
+  --color-info: #{$info};
+  --color-info-hover: #40a9ff;
+  --color-info-light: #e6f7ff;
+
+  /* 中性色 */
+  --color-text-primary: rgba(0, 0, 0, 0.88);
+  --color-text-secondary: rgba(0, 0, 0, 0.65);
+  --color-text-tertiary: rgba(0, 0, 0, 0.45);
+  --color-text-quaternary: rgba(0, 0, 0, 0.25);
+
+  --color-border: #d9d9d9;
+  --color-border-secondary: #f0f0f0;
+
+  --color-bg-base: #ffffff;
+  --color-bg-container: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-bg-layout: #f5f5f5;
+  --color-bg-spotlight: rgba(0, 0, 0, 0.02);
+  --color-bg-mask: rgba(0, 0, 0, 0.45);
+
+  /* 间距系统 */
+  --spacing-xs: #{$spacing-xs};
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
+  --spacing-xxl: #{$spacing-xxl};
+  --spacing-xxxl: #{$spacing-xxxl};
+
+  /* 字体系统 */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-family-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  --font-size-xs: #{$font-size-xs};
+  --font-size-sm: #{$font-size-sm};
+  --font-size-base: #{$font-size-base};
+  --font-size-lg: #{$font-size-lg};
+  --font-size-xl: #{$font-size-xl};
+  --font-size-xxl: #{$font-size-xxl};
+
+  --line-height-base: 1.5715;
+  --line-height-heading: 1.35;
+
+  /* 圆角 */
+  --border-radius-sm: #{$border-radius-sm};
+  --border-radius-base: #{$border-radius-base};
+  --border-radius-lg: #{$border-radius-lg};
+  --border-radius-xl: #{$border-radius-xl};
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  --shadow-base: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 9px 28px 8px rgba(0, 0, 0, 0.05), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12);
+
+  /* 动画 */
+  --transition-fast: #{$transition-fast};
+  --transition-base: #{$transition-base};
+  --transition-slow: #{$transition-slow};
+
+  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* Z-index */
+  --z-index-base: 0;
+  --z-index-dropdown: 1050;
+  --z-index-modal: 1000;
+  --z-index-notification: 1010;
+  --z-index-message: 1010;
+  --z-index-popover: 1030;
+  --z-index-tooltip: 1060;
+}
+
+// ========== 暗色主题 ==========
+html.dark {
+  --color-primary: #{$primary};
+  --color-primary-hover: #40a9ff;
+  --color-primary-active: #096dd9;
+  --color-primary-light: #111b26;
+
+  --color-success: #{$success};
+  --color-success-hover: #73d13d;
+  --color-success-light: #162312;
+
+  --color-warning: #{$warning};
+  --color-warning-hover: #ffc53d;
+  --color-warning-light: #2b2111;
+
+  --color-error: #{$error};
+  --color-error-hover: #ff7875;
+  --color-error-light: #2a1215;
+
+  --color-info: #{$info};
+  --color-info-hover: #40a9ff;
+  --color-info-light: #111b26;
+
+  --color-text-primary: rgba(255, 255, 255, 0.85);
+  --color-text-secondary: rgba(255, 255, 255, 0.65);
+  --color-text-tertiary: rgba(255, 255, 255, 0.45);
+  --color-text-quaternary: rgba(255, 255, 255, 0.25);
+
+  --color-border: #424242;
+  --color-border-secondary: #303030;
+
+  --color-bg-base: #000000;
+  --color-bg-container: #141414;
+  --color-bg-elevated: #1f1f1f;
+  --color-bg-layout: #000000;
+  --color-bg-spotlight: rgba(255, 255, 255, 0.04);
+  --color-bg-mask: rgba(0, 0, 0, 0.65);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.48), 0 1px 6px -1px rgba(0, 0, 0, 0.32), 0 2px 4px 0 rgba(0, 0, 0, 0.32);
+  --shadow-base: 0 1px 2px 0 rgba(0, 0, 0, 0.48), 0 1px 6px -1px rgba(0, 0, 0, 0.32), 0 2px 4px 0 rgba(0, 0, 0, 0.32);
+  --shadow-md: 0 6px 16px 0 rgba(0, 0, 0, 0.72), 0 3px 6px -4px rgba(0, 0, 0, 0.48), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 9px 28px 8px rgba(0, 0, 0, 0.2), 0 6px 16px 0 rgba(0, 0, 0, 0.72), 0 3px 6px -4px rgba(0, 0, 0, 0.48);
+}

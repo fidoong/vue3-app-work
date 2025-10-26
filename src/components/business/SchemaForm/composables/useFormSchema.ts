@@ -30,8 +30,22 @@ export function useFormSchema(
    */
   const visibleSchemas = computed(() => {
     return schemas.value.filter((schema) => {
+      // 检查 hidden 属性
       const hidden = resolveDynamicValue(schema.hidden, formData.value, false)
-      return !hidden
+      if (hidden) {
+        return false
+      }
+
+      // 检查 show 属性（支持 computed 和普通值）
+      if (schema.show !== undefined) {
+        // 如果是 computed ref，获取其 value
+        const showValue = typeof schema.show === 'object' && 'value' in schema.show
+          ? schema.show.value
+          : schema.show
+        return showValue
+      }
+
+      return true
     })
   })
 

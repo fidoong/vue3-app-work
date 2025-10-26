@@ -56,7 +56,6 @@ const {
   validate,
   validateFields,
   clearValidate,
-  handleChange,
 } = useFormValidation(formRef, formData, emit)
 
 /**
@@ -71,40 +70,6 @@ function handleReset() {
  */
 function getActualComponent(schema: any) {
   return getComponent(schema) || schema.component
-}
-
-/**
- * 获取组件的值属性名称
- */
-function getValuePropName(schema: any): string {
-  const propMap: Record<string, string> = {
-    switch: 'checked',
-    upload: 'fileList',
-  }
-  return propMap[schema.type] || 'value'
-}
-
-/**
- * 获取组件绑定（包括值和事件）
- */
-function getComponentBindings(schema: any) {
-  const valueProp = getValuePropName(schema)
-  const updateEvent = `update:${valueProp}`
-
-  return {
-    props: {
-      [valueProp]: formData.value[schema.field],
-      disabled: getDisabled(schema, props.disabled, props.loading),
-      placeholder: schema.placeholder,
-      ...getFieldProps(schema),
-    },
-    events: {
-      [updateEvent]: (val: any) => {
-        formData.value[schema.field] = val
-        handleChange(schema.field, val)
-      },
-    },
-  }
 }
 
 /**
@@ -137,6 +102,15 @@ defineExpose({
   isSubmitting,
   formRef,
 })
+
+// 监听表单数据变化
+watch(
+  formData,
+  (newVal) => {
+    emit('update:modelValue', { ...newVal })
+  },
+  { deep: true },
+)
 
 // 初始化
 onMounted(() => {
@@ -192,8 +166,10 @@ onMounted(() => {
           <component
             :is="getActualComponent(schema)"
             v-else-if="schema.component || schema.type"
-            v-bind="getComponentBindings(schema).props"
-            v-on="getComponentBindings(schema).events"
+            v-model:value="formData[schema.field]"
+            :disabled="getDisabled(schema, disabled, loading)"
+            :placeholder="schema.placeholder"
+            v-bind="{ ...getFieldProps(schema), ...(schema.componentProps || {}) }"
           />
         </a-form-item>
       </a-col>

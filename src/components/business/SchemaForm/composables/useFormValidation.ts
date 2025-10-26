@@ -19,8 +19,6 @@ export interface UseFormValidationReturn {
   validateFields: (fields: string[]) => Promise<any>
   /** 清除验证 */
   clearValidate: (fields?: string[]) => void
-  /** 字段变化处理 */
-  handleChange: (field: string, value: any) => void
 }
 
 /**
@@ -98,14 +96,6 @@ export function useFormValidation(
     emit('reset')
   }
 
-  /**
-   * 字段变化处理
-   */
-  function handleChange(field: string, value: any) {
-    emit('change', field, value)
-    emit('update:modelValue', { ...formData.value })
-  }
-
   return {
     isSubmitting,
     handleSubmit,
@@ -113,6 +103,5 @@ export function useFormValidation(
     validate,
     validateFields,
     clearValidate,
-    handleChange,
   }
 }
