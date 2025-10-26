@@ -29,6 +29,15 @@ const components = [
     disabled: false,
   },
   {
+    title: 'SchemaDetail',
+    description: '基于配置的详情展示组件',
+    path: '/demos/schema-detail',
+    icon: 'i-carbon-document-view',
+    color: 'pink',
+    count: 5,
+    disabled: false,
+  },
+  {
     title: 'SchemaPage',
     description: '完整的 CRUD 页面组件，集成搜索、表格和弹窗',
     path: '/demos/schema-page',

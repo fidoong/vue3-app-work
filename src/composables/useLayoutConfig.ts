@@ -2,6 +2,7 @@ import type { MenuItemSchema, UserInfo } from '~/components/business/SchemaLayou
 import {
   AppstoreOutlined,
   DashboardOutlined,
+  FileOutlined,
   FileTextOutlined,
   FormOutlined,
   SearchOutlined,
@@ -149,6 +150,38 @@ export function useLayoutConfig() {
           key: 'schema-table-advanced',
           title: '高级功能',
           path: '/demos/schema-table/advanced',
+        },
+      ],
+    },
+    {
+      key: 'schema-detail',
+      title: 'SchemaDetail 详情',
+      icon: FileOutlined,
+      children: [
+        {
+          key: 'schema-detail-basic',
+          title: '基础用法',
+          path: '/demos/schema-detail/basic',
+        },
+        {
+          key: 'schema-detail-groups',
+          title: '分组展示',
+          path: '/demos/schema-detail/groups',
+        },
+        {
+          key: 'schema-detail-custom',
+          title: '自定义渲染',
+          path: '/demos/schema-detail/custom',
+        },
+        {
+          key: 'schema-detail-columns',
+          title: '列数控制',
+          path: '/demos/schema-detail/columns',
+        },
+        {
+          key: 'schema-detail-advanced',
+          title: '高级功能',
+          path: '/demos/schema-detail/advanced',
         },
       ],
     },
