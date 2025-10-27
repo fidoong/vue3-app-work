@@ -1,38 +1,58 @@
+import type { App } from 'vue'
+import type { Router } from 'vue-router'
 import type { UserModule } from './types'
 
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
-import App from './App.vue'
+import AppRoot from './App.vue'
 
-import { createModalPlugin } from './components/base/BaseModal'
-import { setupVueQuery } from './lib/query'
+// 样式导入
 import '@unocss/reset/normalize.css'
 import './styles/main.scss'
 import 'uno.css'
 
-const app = createApp(App)
+/**
+ * 创建路由实例
+ */
+function setupRouter(): Router {
+  return createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: setupLayouts(routes),
+  })
+}
 
-// 创建路由
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
-})
+/**
+ * 安装用户模块
+ * 自动加载 modules 目录下的所有模块
+ */
+function setupModules(app: App, router: Router): void {
+  const modules = import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true })
+  Object.values(modules).forEach((module) => {
+    module.install?.({ app, router, isClient: true })
+  })
+}
 
-app.use(router)
+/**
+ * 初始化应用
+ */
+async function bootstrap(): Promise<void> {
+  const app = createApp(AppRoot)
+  const router = setupRouter()
 
-// install all modules under `modules/`
-Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
-  .forEach(i => i.install?.({ app, router, isClient: true }))
+  // 注册路由
+  app.use(router)
 
-// 安装 BaseModal 插件
-app.use(createModalPlugin({
-  debug: false,
-  containerClass: 'app-modal-container',
-}))
+  // 安装所有模块（包括插件、状态管理等）
+  setupModules(app, router)
 
-// 安装 Vue Query
-setupVueQuery(app)
+  // 等待路由准备就绪
+  await router.isReady()
 
-app.mount('#app')
+  // 挂载应用
+  app.mount('#app')
+}
+
+// 启动应用
+bootstrap().catch(console.error)
