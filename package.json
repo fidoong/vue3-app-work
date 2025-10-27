@@ -18,9 +18,7 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "catalog:frontend",
-    "@unhead/vue": "catalog:frontend",
     "@unocss/reset": "catalog:frontend",
-    "@vueuse/core": "catalog:frontend",
     "ant-design-vue": "catalog:frontend",
     "axios": "catalog:frontend",
     "nprogress": "catalog:frontend",
