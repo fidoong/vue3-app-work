@@ -1,7 +1,7 @@
 /**
  * HTTP 客户端实例配置
  */
-import type { RequestConfig } from '../types'
+import type { InternalAxiosRequestConfig } from 'axios'
 import { HttpClientManager } from '../core'
 
 /**
@@ -33,25 +33,7 @@ export const apiClient = HttpClientManager.createClient('api', {
     window.location.href = '/login?expired=1'
   },
 
-  // 重试配置
-  retry: {
-    retries: 3,
-    retryDelay: 1000,
-    shouldRetry: (error: any) => {
-      // 网络错误或服务器错误才重试
-      if (!error.response) {
-        return error.code !== 'ERR_CANCELED'
-      }
-      const status = error.response.status
-      return status >= 500 || status === 429
-    },
-  },
-
-  // 缓存配置
-  cache: {
-    enabled: true,
-    ttl: 5 * 60 * 1000, // 5分钟
-  },
+  // 缓存和重试功能已移除，后续使用 TanStack Query 替代
 
   // 日志配置（仅开发环境）
   logger: {
@@ -62,9 +44,8 @@ export const apiClient = HttpClientManager.createClient('api', {
   },
 
   // 请求拦截器
-  onRequest: async (config: RequestConfig) => {
+  onRequest: async (config: InternalAxiosRequestConfig) => {
     // 添加请求追踪 ID
-    config.headers = config.headers || {}
     config.headers['X-Request-ID'] = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
 
     // 添加用户信息
@@ -76,10 +57,7 @@ export const apiClient = HttpClientManager.createClient('api', {
     return config
   },
 
-  // 响应拦截器
-  onResponse: (response: any) => {
-    return response
-  },
+  // 响应拦截器 - 不需要自定义，使用默认的 handleResponse
 
   // 错误拦截器
   onResponseError: (error: any) => {

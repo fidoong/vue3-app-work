@@ -3,8 +3,6 @@ title: About
 ---
 
 <script setup>
-const { t } = useI18n()
-useHead({ title: () => t('button.about') })
 </script>
 
 <div class="text-center">

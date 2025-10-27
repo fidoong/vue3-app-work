@@ -1,6 +1,14 @@
 /**
- * API工具函数
+ * API 工具函数
+ *
+ * 注意：新的类型安全工具函数已迁移到：
+ * - typeHelpers.ts - 类型相关工具
+ * - requestBuilder.ts - 请求构建工具
  */
+
+export * from './requestBuilder'
+// 重新导出新的工具函数
+export * from './typeHelpers'
 
 /**
  * 构建URL查询参数

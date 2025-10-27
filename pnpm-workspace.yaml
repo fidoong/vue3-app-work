@@ -1,9 +1,5 @@
 packages: []
 
-catalog:
-  '@types/mockjs': ^1.0.10
-  mockjs: ^1.1.0
-  vite-plugin-mock: ^3.0.2
 catalogs:
 
   build:
@@ -28,12 +24,11 @@ catalogs:
     vite-plugin-pwa: ^0.21.2
     vite-plugin-vue-devtools: ^7.7.2
     vite-plugin-vue-layouts: ^0.11.0
-    vite-ssg: ^26.0.0
-    vite-ssg-sitemap: ^0.8.1
 
   dev:
     '@antfu/eslint-config': ^4.11.0
     '@iconify-json/carbon': ^1.2.8
+    '@types/mockjs': ^1.0.10
     '@vue-macros/volar': ^3.0.0-beta.7
     '@vue/test-utils': ^2.4.6
     cypress: ^14.2.1
@@ -43,14 +38,16 @@ catalogs:
     eslint-plugin-format: ^1.0.1
     https-localhost: ^4.7.1
     lint-staged: ^15.5.0
+    mockjs: ^1.1.0
     sass: ^1.93.2
-
     simple-git-hooks: ^2.12.1
     taze: ^19.0.2
     typescript: ^5.8.2
+    vite-plugin-mock: ^3.0.2
     vitest: ^3.0.9
     vue-tsc: ^2.2.8
   frontend:
+    '@tanstack/vue-query': ^5.90.5
     '@unhead/vue': ^2.0.2
     '@unocss/reset': ^66.1.0-beta.7
     '@vueuse/core': ^13.0.0

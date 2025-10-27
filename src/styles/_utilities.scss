@@ -3,6 +3,7 @@
  * 常用的原子类
  */
 
+@use 'sass:color';
 @use 'variables' as *;
 
 // ========== 布局工具类 ==========
@@ -394,7 +395,7 @@ $directions: (
   }
 
   &::-webkit-scrollbar-thumb:active {
-    background-color: darken($thumb-hover-color, 10%);
+    background-color: color.adjust($thumb-hover-color, $lightness: -10%);
   }
 
   &::-webkit-scrollbar-corner {

@@ -2,7 +2,7 @@
  * SchemaLayout 样式
  */
 
-@import '../../../styles/mixins';
+@use '../../../styles/mixins' as *;
 
 // ========== 变量定义 ==========
 $logo-height: 64px;

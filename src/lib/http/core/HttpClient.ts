@@ -5,14 +5,12 @@ import type {
   HttpClientConfig,
   RequestConfig,
   UploadConfig,
-} from '../types'
+} from '../types/index'
 import { message } from 'ant-design-vue'
 import axios from 'axios'
 import { RequestLogger } from '../plugins/logger'
 import { ErrorHandler } from './ErrorHandler'
 import { InterceptorManager } from './InterceptorManager'
-import { RequestCache } from './RequestCache'
-import { setupRetry } from './RequestRetry'
 
 /**
  * HTTP 客户端类
@@ -37,9 +35,6 @@ export class HttpClient {
 
   /** 拦截器管理器 */
   private interceptorManager: InterceptorManager
-
-  /** 请求缓存 */
-  private requestCache?: RequestCache
 
   /** 请求日志 */
   private requestLogger?: RequestLogger
@@ -76,16 +71,7 @@ export class HttpClient {
     // 初始化拦截器管理器
     this.interceptorManager = new InterceptorManager(this.instance)
 
-    // 设置请求重试
-    if (this.config.retry) {
-      setupRetry(this.instance, this.config.retry)
-    }
-
-    // 设置请求缓存
-    if (this.config.cache?.enabled) {
-      this.requestCache = new RequestCache(this.config.cache)
-      this.requestCache.setupCache(this.instance)
-    }
+    // 缓存、重试、排队功能已移除，后续使用 TanStack Query 替代
 
     // 设置请求日志
     if (this.config.logger?.enabled) {
@@ -201,7 +187,10 @@ export class HttpClient {
         message.error(msg || '登录已过期，请重新登录')
       }
       this.config.onTokenExpired?.()
-      return Promise.reject(new Error(msg || '登录已过期'))
+      const error: any = new Error(msg || '登录已过期')
+      error.config = response.config
+      error.response = response
+      return Promise.reject(error)
     }
 
     // 无权限
@@ -209,7 +198,10 @@ export class HttpClient {
       if (config.showError !== false && this.config.showError) {
         message.error(msg || '无权限访问')
       }
-      return Promise.reject(new Error(msg || '无权限访问'))
+      const error: any = new Error(msg || '无权限访问')
+      error.config = response.config
+      error.response = response
+      return Promise.reject(error)
     }
 
     // 其他业务错误
@@ -217,7 +209,10 @@ export class HttpClient {
       message.error(msg || '请求失败')
     }
 
-    return Promise.reject(new Error(msg || '请求失败'))
+    const error: any = new Error(msg || '请求失败')
+    error.config = response.config
+    error.response = response
+    return Promise.reject(error)
   }
 
   /**
@@ -397,7 +392,7 @@ export class HttpClient {
     // 添加额外的表单数据
     if (config?.formData) {
       Object.entries(config.formData).forEach(([key, value]) => {
-        formData.append(key, value)
+        formData.append(key, String(value))
       })
     }
 
@@ -408,10 +403,10 @@ export class HttpClient {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      onUploadProgress: (progressEvent) => {
+      onUploadProgress: (progressEvent: any) => {
         if (config?.onProgress && progressEvent.total) {
           const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          config.onProgress(progress)
+          config.onProgress(progress, progressEvent.loaded, progressEvent.total)
         }
       },
       ...config,
@@ -429,10 +424,10 @@ export class HttpClient {
     const response = await this.instance.get(url, {
       params,
       responseType: 'blob',
-      onDownloadProgress: (progressEvent) => {
+      onDownloadProgress: (progressEvent: any) => {
         if (config?.onProgress && progressEvent.total) {
           const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          config.onProgress(progress)
+          config.onProgress(progress, progressEvent.loaded, progressEvent.total)
         }
       },
       ...config,
@@ -491,75 +486,5 @@ export class HttpClient {
    */
   public getErrorHandler(): ErrorHandler {
     return this.errorHandler
-  }
-
-  /**
-   * 获取请求缓存
-   */
-  public getRequestCache(): RequestCache | undefined {
-    return this.requestCache
-  }
-
-  /**
-   * 清空所有缓存
-   */
-  public clearCache(): void {
-    this.requestCache?.clear()
-  }
-
-  /**
-   * 删除指定 URL 的所有缓存（模糊匹配）
-   */
-  public deleteCacheByUrl(url: string): number {
-    return this.requestCache?.deleteByUrl(url) || 0
-  }
-
-  /**
-   * 删除指定 URL 和参数的缓存（精确匹配）
-   */
-  public deleteCache(url: string, params?: any): boolean {
-    return this.requestCache?.deleteByUrlAndParams('GET', url, params) || false
-  }
-
-  /**
-   * 获取指定 URL 和参数的缓存
-   */
-  public getCache(url: string, params?: any): any | null {
-    return this.requestCache?.getByUrl('GET', url, params) || null
-  }
-
-  /**
-   * 手动设置缓存
-   */
-  public setCache(url: string, data: any, params?: any, ttl?: number): void {
-    this.requestCache?.setByUrl('GET', url, data, params, ttl)
-  }
-
-  /**
-   * 查找匹配 URL 的所有缓存
-   */
-  public findCache(url: string): Array<{ key: string, data: any, age: number }> {
-    return this.requestCache?.findByUrl(url) || []
-  }
-
-  /**
-   * 获取所有缓存信息
-   */
-  public getCacheInfo(): Array<{ key: string, timestamp: number, age: number, expired: boolean }> {
-    return this.requestCache?.getAllInfo() || []
-  }
-
-  /**
-   * 清理过期缓存
-   */
-  public clearExpiredCache(): number {
-    return this.requestCache?.clearExpired() || 0
-  }
-
-  /**
-   * 获取缓存数量
-   */
-  public getCacheSize(): number {
-    return this.requestCache?.size() || 0
   }
 }

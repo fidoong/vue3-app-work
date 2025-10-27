@@ -385,8 +385,8 @@ watch(() => route.path, (newPath) => {
           type="editable-card"
           hide-add
           size="small"
-          @edit="(targetKey, action) => action === 'remove' && removeTab(String(targetKey))"
-          @change="(key) => switchTab(String(key))"
+          @edit="(targetKey: any, action: 'add' | 'remove') => action === 'remove' && removeTab(String(targetKey))"
+          @change="(key: string | number) => switchTab(String(key))"
         >
           <a-tab-pane
             v-for="tab in tabs"
@@ -491,5 +491,5 @@ watch(() => route.path, (newPath) => {
 </template>
 
 <style scoped lang="scss">
-@import './SchemaLayout.scss';
+@use './SchemaLayout.scss';
 </style>

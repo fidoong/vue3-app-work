@@ -17,7 +17,6 @@ import { viteMockServe } from 'vite-plugin-mock'
 import { VitePWA } from 'vite-plugin-pwa'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
-import generateSitemap from 'vite-ssg-sitemap'
 import 'vitest/config'
 
 export default defineConfig(({ command }) => ({
@@ -30,8 +29,10 @@ export default defineConfig(({ command }) => ({
   plugins: [
     // https://github.com/vbenjs/vite-plugin-mock
     viteMockServe({
-      mockPath: 'src/mock',
+      mockPath: 'mock',
       enable: command === 'serve',
+      logger: true,
+      watchFiles: true,
     }),
     // https://github.com/posva/unplugin-vue-router
     VueRouter({
@@ -78,6 +79,8 @@ export default defineConfig(({ command }) => ({
       extensions: ['vue', 'md'],
       // allow auto import and register components used in markdown
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      // exclude README.md files to avoid naming conflicts
+      exclude: [/[\\/]README\.md$/],
       resolvers: [
         AntDesignVueResolver({
           importStyle: false, // css in js
@@ -158,22 +161,5 @@ export default defineConfig(({ command }) => ({
   test: {
     include: ['test/**/*.test.ts'],
     environment: 'jsdom',
-  },
-
-  // https://github.com/antfu/vite-ssg
-  ssgOptions: {
-    script: 'async',
-    formatting: 'minify',
-    beastiesOptions: {
-      reduceInlineStyles: false,
-    },
-    onFinished() {
-      generateSitemap()
-    },
-  },
-
-  ssr: {
-    // TODO: workaround until they support native ESM
-    noExternal: ['workbox-window', /vue-i18n/],
   },
 }))

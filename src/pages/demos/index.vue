@@ -3,11 +3,20 @@ const router = useRouter()
 
 const components = [
   {
+    title: 'API Services',
+    description: 'HTTP 客户端和 API 服务使用示例',
+    path: '/demos/api-services',
+    icon: 'i-carbon-cloud-upload',
+    color: 'blue',
+    count: 4,
+    disabled: false,
+  },
+  {
     title: 'SchemaForm',
     description: '基于配置的表单组件，快速构建复杂表单',
     path: '/demos/schema-form',
     icon: 'i-carbon-document',
-    color: 'blue',
+    color: 'green',
     count: 6,
   },
   {
@@ -15,7 +24,7 @@ const components = [
     description: '搜索表单组件，支持展开收起',
     path: '/demos/search-form',
     icon: 'i-carbon-search',
-    color: 'green',
+    color: 'cyan',
     count: 4,
     disabled: false,
   },

@@ -1,6 +1,7 @@
 import type { MenuItemSchema, UserInfo } from '~/components/business/SchemaLayout/types'
 import {
   AlignLeftOutlined,
+  ApiOutlined,
   AppstoreOutlined,
   DashboardOutlined,
   FileOutlined,
@@ -30,6 +31,33 @@ export function useLayoutConfig() {
       title: '组件示例',
       icon: AppstoreOutlined,
       path: '/demos',
+    },
+    {
+      key: 'api-services',
+      title: 'API Services',
+      icon: ApiOutlined,
+      children: [
+        {
+          key: 'api-services-basic',
+          title: '基础 CRUD',
+          path: '/demos/api-services/basic',
+        },
+        {
+          key: 'api-services-cache',
+          title: '缓存管理',
+          path: '/demos/api-services/cache',
+        },
+        {
+          key: 'api-services-error',
+          title: '错误处理',
+          path: '/demos/api-services/error',
+        },
+        {
+          key: 'api-services-file',
+          title: '文件上传下载',
+          path: '/demos/api-services/file',
+        },
+      ],
     },
     {
       key: 'schema-form',

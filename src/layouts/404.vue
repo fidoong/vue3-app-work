@@ -2,12 +2,6 @@
 import { SchemaLayout } from '~/components/business/SchemaLayout'
 import { useLayoutConfig } from '~/composables/useLayoutConfig'
 
-const { t } = useI18n()
-
-useHead({
-  title: () => t('not-found'),
-})
-
 const { menuItems, userInfo, handleLogout, handleUserMenuClick } = useLayoutConfig()
 </script>
 
