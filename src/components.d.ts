@@ -57,6 +57,7 @@ declare module 'vue' {
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
     ATag: typeof import('ant-design-vue/es')['Tag']
+    ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ATreeSelect: typeof import('ant-design-vue/es')['TreeSelect']
     ATypographyParagraph: typeof import('ant-design-vue/es')['TypographyParagraph']
     AUpload: typeof import('ant-design-vue/es')['Upload']

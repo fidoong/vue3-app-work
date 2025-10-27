@@ -7,10 +7,13 @@ import {
   DownOutlined,
   FullscreenExitOutlined,
   FullscreenOutlined,
+  HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ReloadOutlined,
   UserOutlined,
+  VerticalLeftOutlined,
+  VerticalRightOutlined,
 } from '@ant-design/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { refreshCurrentPage } from '~/utils/redirect'
@@ -46,7 +49,7 @@ const isFullscreen = ref(false)
 const { breadcrumbs } = useBreadcrumb(menuItemsRef)
 
 // 标签页
-const { tabs, activeKey, addTab, removeTab, closeOtherTabs, closeAllTabs, switchTab } = useTabs()
+const { tabs, activeKey, addTab, removeTab, closeOtherTabs, closeAllTabs, closeLeftTabs, closeRightTabs, switchTab } = useTabs()
 
 /**
  * 切换折叠
@@ -374,75 +377,135 @@ watch(() => route.path, (newPath) => {
           transition: 'left 0.2s',
           background: '#fafafa',
           borderBottom: '1px solid #e8e8e8',
-          padding: '0 16px',
           height: '40px',
           display: 'flex',
           alignItems: 'center',
         }"
       >
-        <a-tabs
-          v-model:active-key="activeKey"
-          type="editable-card"
-          hide-add
-          size="small"
-          @edit="(targetKey: any, action: 'add' | 'remove') => action === 'remove' && removeTab(String(targetKey))"
-          @change="(key: string | number) => switchTab(String(key))"
+        <!-- 固定首页按钮 -->
+        <a-tooltip
+          title="返回首页"
+          placement="bottom"
         >
-          <a-tab-pane
-            v-for="tab in tabs"
-            :key="tab.key"
-            :closable="tab.closable"
+          <div
+            class="tabs-home-btn"
+            :class="{ active: activeKey === 'home' }"
+            @click="switchTab('home')"
           >
-            <template #tab>
-              <div
-                class="tab-title"
-                @contextmenu="(e) => handleTabContextMenu(e, tab.key)"
-              >
-                {{ tab.title }}
-              </div>
-            </template>
-          </a-tab-pane>
+            <HomeOutlined />
+            <span class="tabs-home-text">首页</span>
+          </div>
+        </a-tooltip>
 
-          <template #rightExtra>
-            <a-dropdown placement="bottomRight">
-              <a-button
-                type="text"
-                size="small"
-                style="margin-left: 8px"
-              >
-                <template #icon>
-                  <DownOutlined />
-                </template>
-              </a-button>
-              <template #overlay>
-                <a-menu>
-                  <a-menu-item
-                    key="refresh"
-                    @click="handleRefresh"
-                  >
-                    <ReloadOutlined />
-                    刷新当前
-                  </a-menu-item>
-                  <a-menu-divider />
-                  <a-menu-item
-                    key="close-other"
-                    @click="closeOtherTabs(activeKey)"
-                  >
-                    <CloseOutlined />
-                    关闭其他
-                  </a-menu-item>
-                  <a-menu-item
-                    key="close-all"
-                    @click="closeAllTabs"
-                  >
-                    <CloseCircleOutlined />
-                    关闭所有
-                  </a-menu-item>
-                </a-menu>
+        <a-divider
+          type="vertical"
+          style="height: 24px; margin: 0 8px 0 12px"
+        />
+
+        <div class="layout-tabs-wrapper">
+          <a-tabs
+            v-model:active-key="activeKey"
+            type="editable-card"
+            hide-add
+            size="small"
+            :tab-bar-gutter="4"
+            @edit="(targetKey: any, action: 'add' | 'remove') => action === 'remove' && removeTab(String(targetKey))"
+            @change="(key: string | number) => switchTab(String(key))"
+          >
+            <a-tab-pane
+              v-for="tab in tabs.filter(t => t.key !== 'home')"
+              :key="tab.key"
+              :closable="tab.closable"
+            >
+              <template #tab>
+                <div
+                  class="tab-title"
+                  :title="tab.title"
+                  @contextmenu="(e) => handleTabContextMenu(e, tab.key)"
+                >
+                  {{ tab.title }}
+                </div>
               </template>
-            </a-dropdown>
-          </template>
-        </a-tabs>
+            </a-tab-pane>
+
+            <template #rightExtra>
+              <a-dropdown
+                placement="bottomRight"
+                :trigger="['click']"
+                overlay-class-name="tabs-dropdown-menu"
+              >
+                <a-button
+                  type="text"
+                  size="small"
+                  class="tabs-action-btn"
+                >
+                  <template #icon>
+                    <DownOutlined />
+                  </template>
+                </a-button>
+                <template #overlay>
+                  <a-menu class="tabs-action-menu">
+                    <a-menu-item
+                      key="refresh"
+                      class="tabs-menu-item"
+                      @click="handleRefresh"
+                    >
+                      <template #icon>
+                        <ReloadOutlined />
+                      </template>
+                      <span>刷新当前页</span>
+                    </a-menu-item>
+                    <a-menu-divider />
+                    <a-menu-item
+                      key="close-left"
+                      class="tabs-menu-item"
+                      :disabled="tabs.findIndex(t => t.key === activeKey) <= tabs.findIndex(t => t.closable !== false)"
+                      @click="closeLeftTabs(activeKey)"
+                    >
+                      <template #icon>
+                        <VerticalLeftOutlined />
+                      </template>
+                      <span>关闭左侧标签</span>
+                    </a-menu-item>
+                    <a-menu-item
+                      key="close-right"
+                      class="tabs-menu-item"
+                      :disabled="tabs.findIndex(t => t.key === activeKey) >= tabs.length - 1"
+                      @click="closeRightTabs(activeKey)"
+                    >
+                      <template #icon>
+                        <VerticalRightOutlined />
+                      </template>
+                      <span>关闭右侧标签</span>
+                    </a-menu-item>
+                    <a-menu-item
+                      key="close-other"
+                      class="tabs-menu-item"
+                      :disabled="tabs.filter(t => t.closable !== false).length <= 1"
+                      @click="closeOtherTabs(activeKey)"
+                    >
+                      <template #icon>
+                        <CloseOutlined />
+                      </template>
+                      <span>关闭其他标签</span>
+                    </a-menu-item>
+                    <a-menu-item
+                      key="close-all"
+                      class="tabs-menu-item"
+                      :disabled="tabs.filter(t => t.closable !== false).length === 0"
+                      @click="closeAllTabs"
+                    >
+                      <template #icon>
+                        <CloseCircleOutlined />
+                      </template>
+                      <span>关闭全部标签</span>
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </template>
+          </a-tabs>
+        </div>
       </div>
 
       <!-- 内容区域 -->
