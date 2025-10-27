@@ -21,6 +21,7 @@
     "@unocss/reset": "catalog:frontend",
     "ant-design-vue": "catalog:frontend",
     "axios": "catalog:frontend",
+    "motion": "catalog:frontend",
     "nprogress": "catalog:frontend",
     "pinia": "catalog:frontend",
     "vue": "catalog:frontend",

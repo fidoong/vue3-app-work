@@ -37,6 +37,7 @@ declare module 'vue' {
     AMenuDivider: typeof import('ant-design-vue/es')['MenuDivider']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
+    AntdConfigProvider: typeof import('./components/AntdConfigProvider.vue')['default']
     ApiCascader: typeof import('./components/base/ApiCascader/ApiCascader.vue')['default']
     ApiCheckboxGroup: typeof import('./components/base/ApiCheckboxGroup/ApiCheckboxGroup.vue')['default']
     ApiRadioGroup: typeof import('./components/base/ApiRadioGroup/ApiRadioGroup.vue')['default']
@@ -80,6 +81,10 @@ declare module 'vue' {
     SearchForm: typeof import('./components/business/SearchForm/SearchForm.vue')['default']
     SLOT_USAGE: typeof import('./components/base/SLOT_USAGE.md')['default']
     TextEllipsis: typeof import('./components/base/TextEllipsis/TextEllipsis.vue')['default']
+    ThemeButton: typeof import('./components/theme/components/ThemeButton.vue')['default']
+    ThemeDemo: typeof import('./components/ThemeDemo.vue')['default']
+    ThemeDrawer: typeof import('./components/theme/components/ThemeDrawer.vue')['default']
+    ThemeProvider: typeof import('./components/theme/components/ThemeProvider.vue')['default']
     USAGE: typeof import('./components/business/SchemaDetail/USAGE.md')['default']
   }
 }

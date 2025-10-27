@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { ThemeProvider } from './components/theme'
 </script>
 
 <template>
-  <RouterView />
+  <ThemeProvider>
+    <RouterView />
+  </ThemeProvider>
 </template>

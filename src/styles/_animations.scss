@@ -1,0 +1,63 @@
+/**
+ * CSS 动画样式
+ * 简化版 - 主要用于 Vue Transition 组件
+ * 复杂动画使用 Motion One (useMotion)
+ */
+
+// ========== Vue Transition 动画 ==========
+
+// 页面过渡
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity var(--motion-duration-base) var(--motion-ease-in-out),
+    transform var(--motion-duration-base) var(--motion-ease-in-out);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+// 淡入淡出
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--motion-duration-base) var(--motion-ease-in-out);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// 滑动
+.slide-enter-active,
+.slide-leave-active {
+  transition: all var(--motion-duration-base) var(--motion-ease-out);
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+// ========== 减少动画偏好支持 ==========
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

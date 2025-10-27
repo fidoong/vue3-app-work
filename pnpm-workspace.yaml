@@ -51,12 +51,12 @@ catalogs:
     '@unocss/reset': ^66.1.0-beta.7
     ant-design-vue: ^4.2.6
     axios: ^1.12.2
+    motion: ^12.23.24
     nprogress: ^0.2.0
     pinia: ^3.0.1
     vue: ^3.5.13
     vue-i18n: ^11.1.2
     vue-router: ^4.5.0
-
   types:
     '@types/markdown-it-link-attributes': ^3.0.5
     '@types/nprogress': ^0.2.3

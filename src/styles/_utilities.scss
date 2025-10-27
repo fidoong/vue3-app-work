@@ -434,3 +434,87 @@ $directions: (
 .scroll-smooth {
   scroll-behavior: smooth;
 }
+
+// ========== 主题颜色工具类 ==========
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-success {
+  background-color: var(--color-success);
+}
+.bg-warning {
+  background-color: var(--color-warning);
+}
+.bg-error {
+  background-color: var(--color-error);
+}
+.bg-info {
+  background-color: var(--color-info);
+}
+
+.text-theme-primary {
+  color: var(--theme-color-primary);
+}
+.text-theme-success {
+  color: var(--theme-color-success);
+}
+.text-theme-warning {
+  color: var(--theme-color-warning);
+}
+.text-theme-error {
+  color: var(--theme-color-error);
+}
+.text-theme-info {
+  color: var(--theme-color-info);
+}
+
+// ========== 动画工具类 ==========
+.motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    transition: all var(--motion-duration-base) var(--motion-ease-in-out);
+  }
+}
+
+.motion-reduce {
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+// ========== GPU 加速 ==========
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+// ========== 交互状态 ==========
+.hover-lift {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.hover-scale {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-shadow {
+  transition: box-shadow var(--motion-duration-fast) var(--motion-ease-out);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.active-scale {
+  &:active {
+    transform: scale(0.95);
+  }
+}

@@ -125,15 +125,9 @@ catalogs:
     '@tanstack/vue-query':
       specifier: ^5.90.5
       version: 5.90.5
-    '@unhead/vue':
-      specifier: ^2.0.2
-      version: 2.0.2
     '@unocss/reset':
       specifier: ^66.1.0-beta.7
       version: 66.1.0-beta.7
-    '@vueuse/core':
-      specifier: ^13.0.0
-      version: 13.0.0
     ant-design-vue:
       specifier: ^4.2.6
       version: 4.2.6
@@ -175,21 +169,18 @@ importers:
       '@tanstack/vue-query':
         specifier: catalog:frontend
         version: 5.90.5(vue@3.5.13(typescript@5.8.2))
-      '@unhead/vue':
-        specifier: catalog:frontend
-        version: 2.0.2(vue@3.5.13(typescript@5.8.2))
       '@unocss/reset':
         specifier: catalog:frontend
         version: 66.1.0-beta.7
-      '@vueuse/core':
-        specifier: catalog:frontend
-        version: 13.0.0(vue@3.5.13(typescript@5.8.2))
       ant-design-vue:
         specifier: catalog:frontend
         version: 4.2.6(vue@3.5.13(typescript@5.8.2))
       axios:
         specifier: catalog:frontend
         version: 1.12.2
+      motion:
+        specifier: ^12.23.24
+        version: 12.23.24
       nprogress:
         specifier: catalog:frontend
         version: 0.2.0
@@ -2066,11 +2057,6 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@unhead/vue@2.0.2':
-    resolution: {integrity: sha512-pUGcbmPNCALOVWnQRtIjJ5ubNaZus3nHfCBDPEVwhbiLzeLF6wbhgTakwksZ1EegKNOZwRAkmVbV6i+23OYEUQ==}
-    peerDependencies:
-      vue: '>=3.5.13'
-
   '@unocss/astro@66.1.0-beta.7':
     resolution: {integrity: sha512-cqimcWi/JNwNIMFHi3MCWUlF64y867AQmXd1/L3ZpGwb45EdYY2T7RsTsFwh4POdDQT1GRKwpAeYObOs8DhExQ==}
     peerDependencies:
@@ -3747,6 +3733,20 @@ packages:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
 
+  framer-motion@12.23.24:
+    resolution: {integrity: sha512-HMi5HRoRCTou+3fb3h9oTLyJGBxHfW+HnNE25tAXOvVx/IvwMHK0cx7IR4a2ZU6sh3IX1Z+4ts32PcYBOqka8w==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -4692,6 +4692,26 @@ packages:
   mockjs@1.1.0:
     resolution: {integrity: sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==}
     hasBin: true
+
+  motion-dom@12.23.23:
+    resolution: {integrity: sha512-n5yolOs0TQQBRUFImrRfs/+6X4p3Q4n1dUEqt/H58Vx7OW6RF+foWEgmTVDhIWJIMXOuNNL0apKH2S16en9eiA==}
+
+  motion-utils@12.23.6:
+    resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
+
+  motion@12.23.24:
+    resolution: {integrity: sha512-Rc5E7oe2YZ72N//S3QXGzbnXgqNrTESv8KKxABR20q2FLch9gHLo0JLyYo2hZ238bZ9Gx6cWhj9VO0IgwbMjCw==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   mrmime@2.0.0:
     resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
@@ -5747,9 +5767,6 @@ packages:
 
   unconfig@7.3.1:
     resolution: {integrity: sha512-LH5WL+un92tGAzWS87k7LkAfwpMdm7V0IXG2FxEjZz/QxiIW5J5LkcrKQThj0aRz6+h/lFmKI9EUXmK/T0bcrw==}
-
-  unhead@2.0.2:
-    resolution: {integrity: sha512-1pcK/rSA70sezpdgmupQPd/yrul8pVFJRwMvWjEthbsXoTXMqjNQlV7NBXWeWt5r2uje1lZJsvRTHF7IvdOhcg==}
 
   unicode-canonical-property-names-ecmascript@2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}
@@ -8031,7 +8048,8 @@ snapshots:
 
   '@types/unist@3.0.0': {}
 
-  '@types/web-bluetooth@0.0.21': {}
+  '@types/web-bluetooth@0.0.21':
+    optional: true
 
   '@types/yauzl@2.10.0':
     dependencies:
@@ -8116,12 +8134,6 @@ snapshots:
       eslint-visitor-keys: 4.2.0
 
   '@ungap/structured-clone@1.2.0': {}
-
-  '@unhead/vue@2.0.2(vue@3.5.13(typescript@5.8.2))':
-    dependencies:
-      hookable: 5.5.3
-      unhead: 2.0.2
-      vue: 3.5.13(typescript@5.8.2)
 
   '@unocss/astro@66.1.0-beta.7(vite@6.2.3(@types/node@20.2.3)(jiti@2.4.2)(sass@1.93.2)(terser@5.17.6)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))':
     dependencies:
@@ -8863,12 +8875,15 @@ snapshots:
       '@vueuse/metadata': 13.0.0
       '@vueuse/shared': 13.0.0(vue@3.5.13(typescript@5.8.2))
       vue: 3.5.13(typescript@5.8.2)
+    optional: true
 
-  '@vueuse/metadata@13.0.0': {}
+  '@vueuse/metadata@13.0.0':
+    optional: true
 
   '@vueuse/shared@13.0.0(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       vue: 3.5.13(typescript@5.8.2)
+    optional: true
 
   abbrev@1.1.1: {}
 
@@ -10297,6 +10312,12 @@ snapshots:
 
   forwarded@0.2.0: {}
 
+  framer-motion@12.23.24:
+    dependencies:
+      motion-dom: 12.23.23
+      motion-utils: 12.23.6
+      tslib: 2.8.1
+
   fresh@0.5.2: {}
 
   fs-extra@9.1.0:
@@ -11412,6 +11433,17 @@ snapshots:
   mockjs@1.1.0:
     dependencies:
       commander: 13.1.0
+
+  motion-dom@12.23.23:
+    dependencies:
+      motion-utils: 12.23.6
+
+  motion-utils@12.23.6: {}
+
+  motion@12.23.24:
+    dependencies:
+      framer-motion: 12.23.24
+      tslib: 2.8.1
 
   mrmime@2.0.0: {}
 
@@ -12530,10 +12562,6 @@ snapshots:
       defu: 6.1.4
       jiti: 2.4.2
       quansync: 0.2.10
-
-  unhead@2.0.2:
-    dependencies:
-      hookable: 5.5.3
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 

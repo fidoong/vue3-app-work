@@ -1,356 +1,47 @@
 /**
  * 组件样式增强
- * 对 Ant Design Vue 组件的样式优化
+ * 轻量级优化，主要处理圆角和过渡效果
+ * 深色主题样式在 main.scss 中统一处理
  */
 
 @use 'variables' as *;
-@use 'mixins' as *;
 
-// ========== 卡片样式优化 ==========
-.ant-card {
+// ========== 全局圆角优化 ==========
+.ant-card,
+.ant-modal-content,
+.ant-drawer-content,
+.ant-table {
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  @include transition(box-shadow);
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-  }
-
-  &-head {
-    border-bottom: 1px solid var(--color-border-secondary);
-    font-weight: 600;
-  }
 }
 
-// ========== 按钮样式优化 ==========
-.ant-btn {
-  border-radius: var(--border-radius-base);
-  font-weight: 500;
-  @include transition;
-
-  &-primary {
-    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
-
-    &:hover {
-      box-shadow: 0 4px 8px rgba(5, 145, 255, 0.2);
-      transform: translateY(-1px);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-  }
-}
-
-// ========== 输入框样式优化 ==========
+.ant-btn,
 .ant-input,
-.ant-input-number,
 .ant-select-selector,
-.ant-picker {
+.ant-dropdown-menu,
+.ant-message-notice-content,
+.ant-tag {
   border-radius: var(--border-radius-base);
-  @include transition;
 }
 
+// ========== 按钮交互优化 ==========
+.ant-btn-primary:not(:disabled) {
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ========== 输入框焦点优化 ==========
 .ant-input:focus,
-.ant-input-number:focus,
 .ant-select-focused .ant-select-selector,
 .ant-picker-focused {
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
 }
 
-// ========== 表格样式优化 ==========
-.ant-table {
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-
-  &-thead > tr > th {
-    background-color: var(--color-bg-spotlight);
-    font-weight: 600;
-    border-bottom: 2px solid var(--color-border-secondary);
-  }
-
-  &-tbody {
-    > tr {
-      &:hover > td {
-        background-color: var(--color-bg-spotlight);
-      }
-
-      > td {
-        @include transition(background-color);
-      }
-    }
-  }
-}
-
-// ========== 模态框样式优化 ==========
-.ant-modal {
-  &-content {
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-  }
-
-  &-header {
-    border-bottom: 1px solid var(--color-border-secondary);
-    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-  }
-
-  &-footer {
-    border-top: 1px solid var(--color-border-secondary);
-    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
-  }
-}
-
-// ========== 抽屉样式优化 ==========
-.ant-drawer {
-  &-content {
-    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
-  }
-
-  &-header {
-    border-bottom: 1px solid var(--color-border-secondary);
-  }
-
-  &-footer {
-    border-top: 1px solid var(--color-border-secondary);
-  }
-}
-
-// ========== 下拉菜单样式优化 ==========
-.ant-dropdown-menu {
-  border-radius: var(--border-radius-base);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-xs);
-
-  &-item {
-    border-radius: var(--border-radius-sm);
-    @include transition(all, $transition-fast);
-  }
-}
-
-// ========== 标签页样式优化 ==========
-.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
-  border-radius: var(--border-radius-base) var(--border-radius-base) 0 0;
-  @include transition;
-
-  &-active {
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
-  }
-}
-
-// ========== 消息提示样式优化 ==========
-.ant-message-notice-content {
-  border-radius: var(--border-radius-base);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-md) var(--spacing-lg);
-}
-
-.ant-notification-notice {
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
-// ========== 标签样式优化 ==========
-.ant-tag {
-  border-radius: var(--border-radius-sm);
-  font-weight: 500;
-  padding: 2px var(--spacing-sm);
-}
-
-// ========== 徽章样式优化 ==========
-.ant-badge-count {
-  border-radius: var(--border-radius-xl);
-  box-shadow: 0 0 0 1px var(--color-bg-container);
-}
-
-// ========== 进度条样式优化 ==========
-.ant-progress-line .ant-progress-bg {
-  border-radius: var(--border-radius-xl);
-}
-
-// ========== 步骤条样式优化 ==========
-.ant-steps-item {
-  &-icon {
-    border-radius: 50%;
-    @include transition;
-  }
-
-  &-process .ant-steps-item-icon {
-    box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.1);
-  }
-}
-
-// ========== 时间轴样式优化 ==========
-.ant-timeline-item {
-  &-head {
-    @include transition;
-  }
-
-  &:hover .ant-timeline-item-head {
-    transform: scale(1.2);
-  }
-}
-
-// ========== 折叠面板样式优化 ==========
-.ant-collapse {
-  border-radius: var(--border-radius-base);
-  overflow: hidden;
-
-  &-item {
-    border-bottom: 1px solid var(--color-border-secondary);
-  }
-
-  &-header {
-    @include transition(background-color);
-
-    &:hover {
-      background-color: var(--color-bg-spotlight);
-    }
-  }
-}
-
-// ========== 树形控件样式优化 ==========
-.ant-tree .ant-tree-node-content-wrapper {
-  border-radius: var(--border-radius-sm);
-  @include transition(all, $transition-fast);
-
-  &:hover {
-    background-color: var(--color-bg-spotlight);
-  }
-}
-
-// ========== 分页样式优化 ==========
-.ant-pagination {
-  &-item {
-    border-radius: var(--border-radius-base);
-    @include transition;
-
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-    }
-
-    &-active {
-      box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
-    }
-  }
-}
-
-// ========== 面包屑样式优化 ==========
-.ant-breadcrumb-link {
-  @include transition(color);
-
-  &:hover {
-    color: var(--color-primary-hover);
-  }
-}
-
-// ========== 菜单样式优化 ==========
-.ant-menu {
-  &-item,
-  &-submenu-title {
-    border-radius: var(--border-radius-base);
-    @include transition;
-    margin: 4px 0;
-
-    &:hover {
-      background-color: var(--color-bg-spotlight);
-    }
-  }
-
-  &-item-selected {
-    background-color: var(--color-primary-light);
-    font-weight: 600;
-  }
-}
-
-// ========== 表单样式优化 ==========
-.ant-form {
-  &-item-label > label {
-    font-weight: 500;
-  }
-
-  &-item-has-error {
-    .ant-input,
-    .ant-input-number,
-    .ant-select-selector {
-      box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.1);
-    }
-  }
-}
-
-// ========== 加载状态优化 ==========
-.ant-spin-blur {
-  opacity: 0.5;
-  pointer-events: none;
-  user-select: none;
-
-  &::after {
-    opacity: 0.4;
-  }
-}
-
-// ========== 空状态样式优化 ==========
-.ant-empty {
-  padding: var(--spacing-xxxl) 0;
-
-  &-description {
-    color: var(--color-text-tertiary);
-  }
-}
-
-// ========== 结果页样式优化 ==========
-.ant-result {
-  &-title {
-    font-weight: 600;
-  }
-
-  &-subtitle {
-    color: var(--color-text-secondary);
-  }
-}
-
-// ========== 统计数值样式优化 ==========
-.ant-statistic {
-  &-title {
-    color: var(--color-text-secondary);
-    font-weight: 500;
-  }
-
-  &-content {
-    font-weight: 600;
-  }
-}
-
-// ========== 描述列表样式优化 ==========
-.ant-descriptions {
-  &-item-label {
-    font-weight: 500;
-    color: var(--color-text-secondary);
-  }
-
-  &-item-content {
-    color: var(--color-text-primary);
-  }
-}
-
-// ========== 警告提示样式优化 ==========
-.ant-alert {
-  border-radius: var(--border-radius-base);
-  border: none;
-
-  &-success {
-    background-color: var(--color-success-light);
-  }
-
-  &-info {
-    background-color: var(--color-info-light);
-  }
-
-  &-warning {
-    background-color: var(--color-warning-light);
-  }
-
-  &-error {
-    background-color: var(--color-error-light);
-  }
+// ========== 分页交互优化 ==========
+.ant-pagination-item:not(.ant-pagination-item-active):hover {
+  transform: translateY(-1px);
 }
