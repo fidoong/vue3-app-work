@@ -1,22 +1,17 @@
 # HTTP 模块使用指南
 
-基于统一类型系统优化的 HTTP 客户端模块。
+基于 HttpClient 的 HTTP 请求模块，推荐使用简单的函数封装方式。
 
 ## 📦 模块结构
 
 ```
 src/lib/http/
-├── core/                    # 核心功能
-│   ├── HttpClient.ts       # HTTP 客户端
-│   ├── BaseApiService.ts   # API 服务基类
-│   ├── ErrorHandler.ts     # 错误处理
-│   └── InterceptorManager.ts # 拦截器管理
-├── utils/                   # 工具函数
-│   ├── typeHelpers.ts      # 类型工具
-│   ├── requestBuilder.ts   # 请求构建器
-│   └── helpers.ts          # 通用工具
-└── clients/                 # 客户端实例
-    └── index.ts            # 默认客户端
+├── core/
+│   ├── HttpClient.ts          # HTTP 客户端
+│   ├── ErrorHandler.ts        # 错误处理
+│   └── InterceptorManager.ts  # 拦截器管理
+├── utils/                      # 工具函数
+└── clients/                    # 客户端实例
 ```
 
 ## 🚀 快速开始
@@ -24,179 +19,138 @@ src/lib/http/
 ### 1. 使用默认客户端
 
 ```typescript
-import { request } from '~/lib/http'
+import { apiClient } from '~/lib/http'
 
 // GET 请求
-const response = await request.get<User>('/api/users/1')
+const response = await apiClient.get<User>('/api/users/1')
 
 // POST 请求
-const response = await request.post<User>('/api/users', {
+const response = await apiClient.post<User>('/api/users', {
   name: 'John',
   email: 'john@example.com'
 })
 ```
 
-### 2. 创建 API 服务
+### 2. 创建 API 服务（推荐）
 
 ```typescript
-import { BaseApiService } from '~/lib/http'
-import type { User, UserQuery, CreateUserDto, UpdateUserDto } from '~/types'
+import { apiClient } from '~/lib/http'
+import type { QueryParams } from '~/types/http'
 
-class UserService extends BaseApiService<User, UserQuery, CreateUserDto, UpdateUserDto> {
-  constructor() {
-    super(request, '/api/users')
-  }
+// 定义查询参数类型
+type UserQuery = QueryParams<{
+  username?: string
+  email?: string
+  roleId?: number
+}>
 
-  // 自定义方法
-  async resetPassword(id: ID, newPassword: string) {
-    return this.client.post(`${this.baseUrl}/${id}/reset-password`, {
-      password: newPassword
-    }, {
+// 定义 API
+export const userApi = {
+  // 登录
+  login: (params: { username: string; password: string }) =>
+    apiClient.post('/auth/login', params, {
       showSuccess: true,
-      successMessage: '密码重置成功'
-    })
-  }
+      successMessage: '登录成功',
+    }),
+
+  // 获取用户列表
+  getUserList: (params: UserQuery) =>
+    apiClient.post('/user/list', params),
+
+  // 获取用户详情
+  getUserDetail: (id: number) =>
+    apiClient.get(`/user/${id}`),
+
+  // 创建用户
+  createUser: (params: CreateUserDto) =>
+    apiClient.post('/user/create', params, {
+      showSuccess: true,
+      successMessage: '创建成功',
+    }),
+
+  // 更新用户
+  updateUser: (params: UpdateUserDto) =>
+    apiClient.post('/user/update', params, {
+      showSuccess: true,
+      successMessage: '更新成功',
+    }),
+
+  // 删除用户
+  deleteUser: (id: number) =>
+    apiClient.post('/user/delete', { id }, {
+      showSuccess: true,
+      successMessage: '删除成功',
+    }),
+
+  // 重置密码
+  resetPassword: (id: number, password: string) =>
+    apiClient.post(`/user/${id}/reset`, { password }, {
+      showSuccess: true,
+      successMessage: '密码重置成功',
+    }),
 }
 
 // 使用
-const userService = new UserService()
-const users = await userService.getList({ pageNum: 1, pageSize: 10 })
-const user = await userService.getById(1)
-await userService.create({ name: 'John' })
-await userService.update(1, { name: 'Jane' })
-await userService.delete(1)
+await userApi.login({ username: 'admin', password: '123456' })
+await userApi.getUserList({ pageNum: 1, pageSize: 10, username: 'admin' })
+await userApi.getUserDetail(1)
 ```
 
-### 3. 使用请求构建器
+## 🎯 核心功能
+
+### HTTP 方法
 
 ```typescript
-import { createRequest, RequestBuilder } from '~/lib/http'
+import { apiClient } from '~/lib/http'
 
-// 链式调用
-const config = createRequest()
-  .url('/api/users')
-  .method('GET')
-  .params({ page: 1, size: 10 })
-  .showLoading()
-  .showSuccess('加载成功')
-  .build()
+// GET
+await apiClient.get('/api/users', { pageNum: 1, pageSize: 10 })
 
-const response = await request.request(config)
+// POST
+await apiClient.post('/api/users', { name: 'John' })
+
+// PUT
+await apiClient.put('/api/users/1', { name: 'Jane' })
+
+// DELETE
+await apiClient.delete('/api/users/1')
+
+// PATCH
+await apiClient.patch('/api/users/1', { status: 1 })
 ```
 
-### 4. 使用类型工具
+### 请求配置
 
 ```typescript
-import {
-  extractData,
-  extractPageList,
-  isSuccessResponse,
-  transformResponse
-} from '~/lib/http'
-
-// 提取数据
-const response = await request.get<User>('/api/users/1')
-const user = extractData(response)
-
-// 提取分页列表
-const pageResponse = await request.get<PageResult<User>>('/api/users')
-const users = extractPageList(pageResponse.data)
-
-// 判断响应状态
-if (isSuccessResponse(response)) {
-  console.log('请求成功', response.data)
-}
-
-// 转换响应数据
-const transformed = transformResponse(response, user => ({
-  ...user,
-  fullName: `${user.firstName} ${user.lastName}`
-}))
+// 单个请求配置
+await apiClient.post('/api/users', data, {
+  showSuccess: true,
+  successMessage: '创建成功',
+  showLoading: false,
+  showError: true,
+  requireAuth: true,
+  timeout: 30000,
+})
 ```
 
-## 📝 类型安全
-
-### 完整的类型推导
+### 文件上传
 
 ```typescript
-// 自动推导返回类型
-const response = await request.get<User>('/api/users/1')
-// response: ApiResponse<User>
+import { uploadClient } from '~/lib/http'
 
-const user = extractData(response)
-// user: User
-
-// 分页数据
-const pageResponse = await request.get<PageResult<User>>('/api/users')
-// pageResponse: ApiResponse<PageResult<User>>
-
-const users = extractPageList(pageResponse.data)
-// users: User[]
-```
-
-### 使用类型守卫
-
-```typescript
-import { isApiResponse, isSuccessResponse } from '~/types/guards'
-
-if (isApiResponse(data)) {
-  // TypeScript 知道 data 是 ApiResponse 类型
-  console.log(data.code, data.message)
-}
-
-if (isSuccessResponse(response)) {
-  // TypeScript 知道响应成功
-  console.log(response.data)
-}
-```
-
-## 🎯 高级用法
-
-### 1. 只读服务
-
-```typescript
-import { ReadonlyApiService } from '~/lib/http'
-
-class LogService extends ReadonlyApiService<Log, LogQuery> {
-  constructor() {
-    super(request, '/api/logs')
-  }
-}
-
-const logService = new LogService()
-const logs = await logService.getList({ pageNum: 1, pageSize: 20 })
-```
-
-### 2. 树形服务
-
-```typescript
-import { TreeApiService } from '~/lib/http'
-
-class MenuService extends TreeApiService<Menu, MenuQuery, CreateMenuDto, UpdateMenuDto> {
-  constructor() {
-    super(request, '/api/menus')
-  }
-}
-
-const menuService = new MenuService()
-const tree = await menuService.getTree()
-const children = await menuService.getChildren(1)
-await menuService.move(1, 2)
-```
-
-### 3. 文件上传下载
-
-```typescript
-// 上传
 const file = document.querySelector('input[type="file"]').files[0]
-const response = await request.upload('/api/upload', file, {
+
+await uploadClient.upload('/api/upload', file, {
   onProgress: (progress, loaded, total) => {
     console.log(`上传进度: ${progress}%`)
   }
 })
+```
 
-// 下载
-await request.download('/api/export', { type: 'excel' }, {
+### 文件下载
+
+```typescript
+await apiClient.download('/api/export', { type: 'excel' }, {
   filename: 'users.xlsx',
   onProgress: (progress, loaded, total) => {
     console.log(`下载进度: ${progress}%`)
@@ -204,11 +158,151 @@ await request.download('/api/export', { type: 'excel' }, {
 })
 ```
 
-### 4. 请求配置
+## 🎨 实际项目示例
+
+### 用户管理模块
 
 ```typescript
-// 全局配置
-const client = new HttpClient({
+import { apiClient } from '~/lib/http'
+import type { QueryParams } from '~/types/http'
+
+// 定义类型
+interface User {
+  id: number
+  username: string
+  email: string
+  roleId: number
+}
+
+type UserQuery = QueryParams<{
+  username?: string
+  email?: string
+  roleId?: number
+}>
+
+interface CreateUserDto {
+  username: string
+  email: string
+  password: string
+  roleId: number
+}
+
+interface UpdateUserDto {
+  id: number
+  username?: string
+  email?: string
+  roleId?: number
+}
+
+// 定义 API
+export const userApi = {
+  login: (params: { username: string; password: string }) =>
+    apiClient.post('/auth/login', params, {
+      showSuccess: true,
+      successMessage: '登录成功',
+    }),
+
+  logout: () =>
+    apiClient.post('/auth/logout'),
+
+  getUserList: (params: UserQuery) =>
+    apiClient.post<PageResult<User>>('/user/list', params),
+
+  getUserDetail: (id: number) =>
+    apiClient.get<User>(`/user/${id}`),
+
+  createUser: (params: CreateUserDto) =>
+    apiClient.post<User>('/user/create', params, {
+      showSuccess: true,
+      successMessage: '创建成功',
+    }),
+
+  updateUser: (params: UpdateUserDto) =>
+    apiClient.post<User>('/user/update', params, {
+      showSuccess: true,
+      successMessage: '更新成功',
+    }),
+
+  deleteUser: (id: number) =>
+    apiClient.post('/user/delete', { id }, {
+      showSuccess: true,
+      successMessage: '删除成功',
+    }),
+
+  batchDelete: (ids: number[]) =>
+    apiClient.post('/user/batch-delete', { ids }, {
+      showSuccess: true,
+      successMessage: '批量删除成功',
+    }),
+
+  resetPassword: (id: number, password: string) =>
+    apiClient.post(`/user/${id}/reset`, { password }, {
+      showSuccess: true,
+      successMessage: '密码重置成功',
+    }),
+
+  changeStatus: (id: number, status: number) =>
+    apiClient.post('/user/status', { id, status }),
+
+  exportUsers: (params: UserQuery) =>
+    apiClient.download('/user/export', params, {
+      filename: 'users.xlsx',
+    }),
+}
+```
+
+### 在 Vue 组件中使用
+
+```vue
+<script setup lang="ts">
+import { userApi } from '~/services/user'
+import { useQuery, useMutation } from '@tanstack/vue-query'
+
+// 查询用户列表
+const { data: users, isLoading } = useQuery({
+  queryKey: ['users', { pageNum: 1, pageSize: 10 }],
+  queryFn: () => userApi.getUserList({ pageNum: 1, pageSize: 10 })
+})
+
+// 创建用户
+const { mutate: createUser } = useMutation({
+  mutationFn: userApi.createUser,
+  onSuccess: () => {
+    console.log('创建成功')
+  }
+})
+
+// 删除用户
+const { mutate: deleteUser } = useMutation({
+  mutationFn: userApi.deleteUser,
+  onSuccess: () => {
+    console.log('删除成功')
+  }
+})
+
+function handleCreate() {
+  createUser({
+    username: 'john',
+    email: 'john@example.com',
+    password: '123456',
+    roleId: 1,
+  })
+}
+
+function handleDelete(id: number) {
+  deleteUser(id)
+}
+</script>
+```
+
+## 🔧 高级配置
+
+### 全局配置
+
+```typescript
+import { HttpClientManager } from '~/lib/http'
+
+const client = HttpClientManager.createClient('custom', {
   baseURL: '/api',
   timeout: 15000,
   showLoading: true,
@@ -217,136 +311,28 @@ const client = new HttpClient({
   getToken: () => localStorage.getItem('token'),
   onTokenExpired: () => {
     // 跳转到登录页
-  }
-})
-
-// 单个请求配置
-const response = await request.get('/api/users', params, {
-  showLoading: false,
-  showError: false,
-  requireAuth: false,
-  timeout: 30000
-})
-```
-
-## 🔧 工具函数
-
-### URL 构建
-
-```typescript
-import { buildUrl, buildPathUrl } from '~/lib/http'
-
-// 查询参数
-const url = buildUrl('/api/users', { page: 1, size: 10 })
-// "/api/users?page=1&size=10"
-
-// 路径参数
-const url = buildPathUrl('/api/users/:id/posts/:postId', {
-  id: 1,
-  postId: 2
-})
-// "/api/users/1/posts/2"
-```
-
-### 响应处理
-
-```typescript
-import {
-  createSuccessResponse,
-  createErrorResponse,
-  createPageResponse,
-  safeExtractData
-} from '~/lib/http'
-
-// 创建响应
-const success = createSuccessResponse({ id: 1, name: 'John' })
-const error = createErrorResponse(400, '参数错误')
-const page = createPageResponse(users, 100, 1, 10)
-
-// 安全提取数据
-const user = safeExtractData(response, defaultUser)
-```
-
-## 📊 最佳实践
-
-### 1. 统一的服务层
-
-```typescript
-// services/user.service.ts
-export class UserService extends BaseApiService<User, UserQuery, CreateUserDto, UpdateUserDto> {
-  constructor() {
-    super(request, '/api/users')
-  }
-}
-
-// 导出单例
-export const userService = new UserService()
-```
-
-### 2. 类型定义
-
-```typescript
-// types/user.ts
-export interface User {
-  id: number
-  name: string
-  email: string
-}
-
-export interface UserQuery extends QueryParams {
-  name?: string
-  status?: number
-}
-
-export interface CreateUserDto {
-  name: string
-  email: string
-  password: string
-}
-
-export interface UpdateUserDto {
-  name?: string
-  email?: string
-}
-```
-
-### 3. 错误处理
-
-```typescript
-try {
-  const response = await userService.getById(1)
-  const user = extractData(response)
-  // 处理数据
-} catch (error) {
-  // 错误已经被全局处理
-  // 这里只需要处理特殊逻辑
-  console.error('获取用户失败', error)
-}
-```
-
-## 🎨 与 TanStack Query 集成
-
-```typescript
-import { useQuery, useMutation } from '@tanstack/vue-query'
-import { userService } from '~/services'
-
-// 查询
-const { data, isLoading } = useQuery({
-  queryKey: ['users', params],
-  queryFn: () => userService.getList(params)
-})
-
-// 变更
-const { mutate } = useMutation({
-  mutationFn: (data: CreateUserDto) => userService.create(data),
-  onSuccess: () => {
-    // 刷新列表
-  }
+    window.location.href = '/login'
+  },
+  onRequest: async (config) => {
+    // 请求拦截
+    return config
+  },
+  onResponse: (response) => {
+    // 响应拦截
+    return response
+  },
 })
 ```
 
 ## 📚 相关文档
 
-- [类型系统文档](../../types/README.md)
+- [类型系统文档](../../types/http/README.md) - QueryParams 泛型使用
 - [类型守卫文档](../../types/guards/README.md)
-- [API 工具类型](../../types/utils/api-helpers.ts)
+
+## ✨ 优势
+
+- ✅ **简单直观** - 零学习成本，直接使用函数
+- ✅ **完全灵活** - 想怎么写就怎么写
+- ✅ **类型安全** - 完整的 TypeScript 类型推导
+- ✅ **易于调试** - 代码清晰，问题一目了然
+- ✅ **易于维护** - 统一的代码风格

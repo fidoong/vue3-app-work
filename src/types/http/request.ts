@@ -45,14 +45,40 @@ export interface TimeRangeParams {
 }
 
 /**
- * 通用查询参数（组合分页、排序、时间范围）
+ * 基础查询参数（组合分页、排序、时间范围）
  */
-export interface QueryParams extends PageParams, SortParams, TimeRangeParams {
+export interface BaseQueryParams extends PageParams, SortParams, TimeRangeParams {
   /** 搜索关键词 */
   keyword?: string
   /** 状态 */
   status?: number | string
 }
+
+/**
+ * 通用查询参数（支持泛型扩展）
+ * @template T - 额外的查询条件类型
+ * @example
+ * // 不带额外条件
+ * type UserQuery = QueryParams
+ *
+ * // 带额外条件
+ * type UserQuery = QueryParams<{
+ *   username?: string
+ *   email?: string
+ *   roleId?: number
+ * }>
+ */
+export type QueryParams<T = object> = BaseQueryParams & T
+
+/**
+ * 创建查询参数类型的辅助函数
+ * @example
+ * type UserQuery = CreateQueryParams<{
+ *   username?: string
+ *   email?: string
+ * }>
+ */
+export type CreateQueryParams<T = object> = QueryParams<T>
 
 /**
  * ID 参数
@@ -83,9 +109,10 @@ export interface BatchStatusParam extends IdsParam {
 }
 
 /**
- * 导出参数
+ * 导出参数（支持泛型扩展）
+ * @template T - 额外的查询条件类型
  */
-export interface ExportParams extends QueryParams {
+export type ExportParams<T = object> = QueryParams<T> & {
   /** 导出格式 */
   format?: 'xlsx' | 'csv' | 'pdf'
   /** 导出字段 */
