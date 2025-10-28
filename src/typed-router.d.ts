@@ -36,7 +36,6 @@ declare module 'vue-router/auto-routes' {
     '/demos/schema-detail/columns': RouteRecordInfo<'/demos/schema-detail/columns', '/demos/schema-detail/columns', Record<never, never>, Record<never, never>>,
     '/demos/schema-detail/custom': RouteRecordInfo<'/demos/schema-detail/custom', '/demos/schema-detail/custom', Record<never, never>, Record<never, never>>,
     '/demos/schema-detail/groups': RouteRecordInfo<'/demos/schema-detail/groups', '/demos/schema-detail/groups', Record<never, never>, Record<never, never>>,
-    '/demos/schema-detail/README': RouteRecordInfo<'/demos/schema-detail/README', '/demos/schema-detail/README', Record<never, never>, Record<never, never>>,
     '/demos/schema-form/': RouteRecordInfo<'/demos/schema-form/', '/demos/schema-form', Record<never, never>, Record<never, never>>,
     '/demos/schema-form/async': RouteRecordInfo<'/demos/schema-form/async', '/demos/schema-form/async', Record<never, never>, Record<never, never>>,
     '/demos/schema-form/basic': RouteRecordInfo<'/demos/schema-form/basic', '/demos/schema-form/basic', Record<never, never>, Record<never, never>>,
@@ -61,10 +60,8 @@ declare module 'vue-router/auto-routes' {
     '/demos/text-ellipsis/': RouteRecordInfo<'/demos/text-ellipsis/', '/demos/text-ellipsis', Record<never, never>, Record<never, never>>,
     '/demos/text-ellipsis/basic': RouteRecordInfo<'/demos/text-ellipsis/basic', '/demos/text-ellipsis/basic', Record<never, never>, Record<never, never>>,
     '/demos/text-ellipsis/methods': RouteRecordInfo<'/demos/text-ellipsis/methods', '/demos/text-ellipsis/methods', Record<never, never>, Record<never, never>>,
-    '/demos/text-ellipsis/README': RouteRecordInfo<'/demos/text-ellipsis/README', '/demos/text-ellipsis/README', Record<never, never>, Record<never, never>>,
     '/demos/text-ellipsis/table': RouteRecordInfo<'/demos/text-ellipsis/table', '/demos/text-ellipsis/table', Record<never, never>, Record<never, never>>,
     '/demos/text-ellipsis/tooltip': RouteRecordInfo<'/demos/text-ellipsis/tooltip', '/demos/text-ellipsis/tooltip', Record<never, never>, Record<never, never>>,
-    '/README': RouteRecordInfo<'/README', '/README', Record<never, never>, Record<never, never>>,
     '/redirect': RouteRecordInfo<'/redirect', '/redirect', Record<never, never>, Record<never, never>>,
   }
 }
