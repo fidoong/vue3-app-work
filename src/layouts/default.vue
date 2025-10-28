@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { SchemaLayout } from '~/components/business/SchemaLayout'
+import { AppLayout } from '~/components/layout'
 import { useLayoutConfig } from '~/composables/useLayoutConfig'
 
 const { menuItems, userInfo, handleLogout, handleUserMenuClick } = useLayoutConfig()
 </script>
 
 <template>
-  <SchemaLayout
+  <AppLayout
     :menu-items="menuItems"
     :user-info="userInfo"
     title="Vue3 组件库"
@@ -16,5 +16,5 @@ const { menuItems, userInfo, handleLogout, handleUserMenuClick } = useLayoutConf
     @user-menu-click="handleUserMenuClick"
   >
     <RouterView />
-  </SchemaLayout>
+  </AppLayout>
 </template>

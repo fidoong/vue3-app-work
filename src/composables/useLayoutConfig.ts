@@ -1,4 +1,4 @@
-import type { MenuItemSchema, UserInfo } from '~/components/business/SchemaLayout/types'
+import type { MenuItemSchema, UserInfo } from '~/components/layout/AppLayout'
 import {
   AlignLeftOutlined,
   ApiOutlined,

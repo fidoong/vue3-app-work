@@ -12,6 +12,9 @@ export * from './business'
 
 // 向后兼容：保留旧的导出路径
 export { SchemaForm as DynamicForm } from './business/SchemaForm'
+
 export { default as DynamicFormCompat } from './business/SchemaForm'
+// 布局组件
+export * from './layout'
 // 共享模块
 export * from './shared'
