@@ -50,6 +50,7 @@ function handleHomeClick() {
 }
 
 function handleContextMenu(e: MouseEvent, key: string) {
+  e.preventDefault()
   emit('contextmenu', e, key)
 }
 </script>
@@ -66,33 +67,25 @@ function handleContextMenu(e: MouseEvent, key: string) {
       transition: 'left 0.2s',
     }"
   >
-    <!-- 固定首页按钮 -->
-    <a-tooltip
-      title="返回首页"
-      placement="bottom"
+    <!-- 首页按钮 -->
+    <div
+      class="tabs-home-btn"
+      :class="{ active: activeKey === 'home' }"
+      @click="handleHomeClick"
     >
-      <div
-        class="tabs-home-btn"
-        :class="{ active: activeKey === 'home' }"
-        @click="handleHomeClick"
-      >
-        <HomeOutlined />
-        <span class="tabs-home-text">首页</span>
-      </div>
-    </a-tooltip>
+      <HomeOutlined class="home-icon" />
+      <span class="home-text">首页</span>
+    </div>
 
-    <a-divider
-      type="vertical"
-      style="height: 24px; margin: 0 8px 0 12px"
-    />
+    <div class="tabs-divider" />
 
-    <div class="layout-tabs-wrapper">
+    <!-- 标签页区域 -->
+    <div class="tabs-content">
       <a-tabs
         :active-key="activeKey"
         type="editable-card"
         hide-add
         size="small"
-        :tab-bar-gutter="4"
         @edit="handleTabEdit"
         @change="handleTabChange"
       >
@@ -103,7 +96,7 @@ function handleContextMenu(e: MouseEvent, key: string) {
         >
           <template #tab>
             <div
-              class="tab-title"
+              class="tab-label"
               :title="tab.title"
               @contextmenu="(e) => handleContextMenu(e, tab.key)"
             >
@@ -111,131 +104,198 @@ function handleContextMenu(e: MouseEvent, key: string) {
             </div>
           </template>
         </a-tab-pane>
-
-        <template #rightExtra>
-          <LayoutTabsActions
-            :tabs="tabs"
-            :active-key="activeKey"
-            @refresh="emit('refresh')"
-            @close-left="(key) => emit('closeLeft', key)"
-            @close-right="(key) => emit('closeRight', key)"
-            @close-other="(key) => emit('closeOther', key)"
-            @close-all="emit('closeAll')"
-          />
-        </template>
       </a-tabs>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="tabs-actions">
+      <LayoutTabsActions
+        :tabs="tabs"
+        :active-key="activeKey"
+        @refresh="emit('refresh')"
+        @close-left="(key) => emit('closeLeft', key)"
+        @close-right="(key) => emit('closeRight', key)"
+        @close-other="(key) => emit('closeOther', key)"
+        @close-all="emit('closeAll')"
+      />
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .layout-tabs {
-  background: #fafafa;
-  border-bottom: 1px solid #e8e8e8;
-  height: 40px;
   display: flex;
   align-items: center;
+  height: 40px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .tabs-home-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 16px;
-  height: 32px;
+  height: 28px;
+  padding: 0 12px;
   margin-left: 12px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s;
-  color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
   user-select: none;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  .home-icon {
+    font-size: 16px;
+  }
+
+  .home-text {
+    font-weight: 500;
+  }
 
   &:hover {
-    background: rgba(24, 144, 255, 0.08);
     color: #1890ff;
+    background: #e6f7ff;
   }
 
   &.active {
-    background: #1890ff;
     color: #fff;
-  }
-
-  .tabs-home-text {
-    font-weight: 500;
+    background: #1890ff;
   }
 }
 
-.layout-tabs-wrapper {
+.tabs-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 12px;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.tabs-content {
+  position: relative;
   flex: 1;
-  overflow: hidden;
   min-width: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
 
   :deep(.ant-tabs) {
-    height: 40px;
-  }
+    width: 100%;
 
-  :deep(.ant-tabs-nav) {
-    margin: 0;
-    padding: 0 8px;
-    background: transparent;
+    .ant-tabs-nav {
+      margin: 0;
+      padding: 0;
+      background: transparent;
 
-    &::before {
-      border: none;
-    }
-  }
-
-  :deep(.ant-tabs-tab) {
-    padding: 4px 12px;
-    margin: 0 2px;
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
-    transition: all 0.3s;
-
-    &:hover {
-      color: #1890ff;
-      border-color: #1890ff;
+      &::before {
+        display: none;
+      }
     }
 
-    &.ant-tabs-tab-active {
-      background: #1890ff;
-      border-color: #1890ff;
+    .ant-tabs-nav-wrap {
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
 
-      .ant-tabs-tab-btn {
-        color: #fff;
+      &::after {
+        display: none;
+      }
+    }
+
+    .ant-tabs-nav-list {
+      display: flex;
+      align-items: center;
+    }
+
+    .ant-tabs-ink-bar {
+      display: none;
+    }
+
+    .ant-tabs-tab {
+      display: flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 12px;
+      margin: 0 4px 0 0;
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      transition: all 0.2s;
+
+      &:hover {
+        color: #1890ff;
+        background: #e6f7ff;
+        border-color: #91d5ff;
       }
 
-      .ant-tabs-tab-remove {
-        color: rgba(255, 255, 255, 0.85);
+      &.ant-tabs-tab-active {
+        color: #1890ff;
+        background: #fff;
+        border-color: #1890ff;
 
-        &:hover {
-          color: #fff;
+        .ant-tabs-tab-btn {
+          color: #1890ff;
+          font-weight: 500;
         }
       }
     }
-  }
 
-  :deep(.ant-tabs-tab-btn) {
-    font-size: 13px;
-  }
-
-  :deep(.ant-tabs-tab-remove) {
-    margin-left: 4px;
-    font-size: 12px;
-    transition: all 0.3s;
-
-    &:hover {
-      color: #ff4d4f;
+    .ant-tabs-tab-btn {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      line-height: 1;
+      color: inherit;
     }
-  }
 
-  :deep(.ant-tabs-nav-operations) {
-    display: none;
+    .ant-tabs-tab-remove {
+      display: flex;
+      align-items: center;
+      margin-left: 6px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.45);
+      transition: all 0.2s;
+
+      &:hover {
+        color: #ff4d4f;
+      }
+    }
+
+    .ant-tabs-nav-operations {
+      display: none;
+    }
+
+    .ant-tabs-extra-content {
+      display: none;
+    }
   }
 }
 
-.tab-title {
+.tabs-actions {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+.tab-label {
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;

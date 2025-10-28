@@ -8,13 +8,14 @@ import {
   VerticalLeftOutlined,
   VerticalRightOutlined,
 } from '@ant-design/icons-vue'
+import { computed } from 'vue'
 
 interface LayoutTabsActionsProps {
   tabs: TabItem[]
   activeKey: string
 }
 
-defineProps<LayoutTabsActionsProps>()
+const props = defineProps<LayoutTabsActionsProps>()
 
 const emit = defineEmits<{
   refresh: []
@@ -23,79 +24,93 @@ const emit = defineEmits<{
   closeOther: [key: string]
   closeAll: []
 }>()
+
+const currentIndex = computed(() => {
+  return props.tabs.findIndex(t => t.key === props.activeKey)
+})
+
+const firstClosableIndex = computed(() => {
+  return props.tabs.findIndex(t => t.closable !== false)
+})
+
+const closableTabs = computed(() => {
+  return props.tabs.filter(t => t.closable !== false)
+})
+
+const canCloseLeft = computed(() => {
+  return currentIndex.value > firstClosableIndex.value
+})
+
+const canCloseRight = computed(() => {
+  const lastClosableIndex = props.tabs.map((t, i) => ({ ...t, index: i }))
+    .filter(t => t.closable !== false)
+    .pop()
+    ?.index ?? -1
+  return currentIndex.value < lastClosableIndex
+})
+
+const canCloseOther = computed(() => {
+  return closableTabs.value.length > 1
+})
+
+const canCloseAll = computed(() => {
+  return closableTabs.value.length > 0
+})
 </script>
 
 <template>
   <a-dropdown
     placement="bottomRight"
     :trigger="['click']"
-    overlay-class-name="tabs-dropdown-menu"
   >
     <a-button
       type="text"
       size="small"
-      class="tabs-action-btn"
+      class="action-trigger"
     >
-      <template #icon>
-        <DownOutlined />
-      </template>
+      <DownOutlined />
     </a-button>
     <template #overlay>
-      <a-menu class="tabs-action-menu">
+      <a-menu class="action-menu">
         <a-menu-item
           key="refresh"
-          class="tabs-menu-item"
           @click="emit('refresh')"
         >
-          <template #icon>
-            <ReloadOutlined />
-          </template>
+          <ReloadOutlined class="menu-icon" />
           <span>刷新当前页</span>
         </a-menu-item>
         <a-menu-divider />
         <a-menu-item
           key="close-left"
-          class="tabs-menu-item"
-          :disabled="tabs.findIndex(t => t.key === activeKey) <= tabs.findIndex(t => t.closable !== false)"
+          :disabled="!canCloseLeft"
           @click="emit('closeLeft', activeKey)"
         >
-          <template #icon>
-            <VerticalLeftOutlined />
-          </template>
-          <span>关闭左侧标签</span>
+          <VerticalLeftOutlined class="menu-icon" />
+          <span>关闭左侧</span>
         </a-menu-item>
         <a-menu-item
           key="close-right"
-          class="tabs-menu-item"
-          :disabled="tabs.findIndex(t => t.key === activeKey) >= tabs.length - 1"
+          :disabled="!canCloseRight"
           @click="emit('closeRight', activeKey)"
         >
-          <template #icon>
-            <VerticalRightOutlined />
-          </template>
-          <span>关闭右侧标签</span>
+          <VerticalRightOutlined class="menu-icon" />
+          <span>关闭右侧</span>
         </a-menu-item>
         <a-menu-item
           key="close-other"
-          class="tabs-menu-item"
-          :disabled="tabs.filter(t => t.closable !== false).length <= 1"
+          :disabled="!canCloseOther"
           @click="emit('closeOther', activeKey)"
         >
-          <template #icon>
-            <CloseOutlined />
-          </template>
-          <span>关闭其他标签</span>
+          <CloseOutlined class="menu-icon" />
+          <span>关闭其他</span>
         </a-menu-item>
         <a-menu-item
           key="close-all"
-          class="tabs-menu-item"
-          :disabled="tabs.filter(t => t.closable !== false).length === 0"
+          :disabled="!canCloseAll"
           @click="emit('closeAll')"
         >
-          <template #icon>
-            <CloseCircleOutlined />
-          </template>
-          <span>关闭全部标签</span>
+          <CloseCircleOutlined class="menu-icon" />
+          <span>关闭全部</span>
         </a-menu-item>
       </a-menu>
     </template>
@@ -103,72 +118,65 @@ const emit = defineEmits<{
 </template>
 
 <style scoped lang="scss">
-.tabs-action-btn {
-  margin-left: 8px;
-  flex-shrink: 0;
+.action-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   color: rgba(0, 0, 0, 0.65);
-  transition: all 0.3s;
+  border-radius: 4px;
+  transition: all 0.2s;
 
   &:hover {
     color: #1890ff;
-    background: rgba(24, 144, 255, 0.08);
+    background: #e6f7ff;
   }
 }
 
-:global(.tabs-dropdown-menu) {
-  .ant-dropdown-menu {
-    min-width: 160px;
-    padding: 4px;
-    border-radius: 6px;
-    box-shadow:
-      0 3px 6px -4px rgba(0, 0, 0, 0.12),
-      0 6px 16px 0 rgba(0, 0, 0, 0.08),
-      0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  }
+.action-menu {
+  min-width: 140px;
+  padding: 4px;
 
-  .ant-dropdown-menu-item {
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: all 0.2s;
+  :deep(.ant-dropdown-menu-item) {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
-    line-height: 22px;
+    height: 32px;
+    padding: 4px 12px;
+    font-size: 13px;
+    line-height: 24px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    .menu-icon {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.45);
+    }
 
     &:hover:not(.ant-dropdown-menu-item-disabled) {
-      background: rgba(24, 144, 255, 0.08);
       color: #1890ff;
+      background: #e6f7ff;
+
+      .menu-icon {
+        color: #1890ff;
+      }
     }
 
     &.ant-dropdown-menu-item-disabled {
+      color: rgba(0, 0, 0, 0.25);
       cursor: not-allowed;
-      opacity: 0.4;
-    }
 
-    .anticon {
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-
-    span {
-      flex: 1;
+      .menu-icon {
+        color: rgba(0, 0, 0, 0.25);
+      }
     }
   }
 
-  .ant-dropdown-menu-item-divider {
+  :deep(.ant-dropdown-menu-item-divider) {
     margin: 4px 0;
-    background: rgba(0, 0, 0, 0.06);
-  }
-}
-
-.tabs-action-menu {
-  .tabs-menu-item {
-    user-select: none;
-
-    &:active:not(.ant-dropdown-menu-item-disabled) {
-      background: rgba(24, 144, 255, 0.15);
-    }
+    background: #f0f0f0;
   }
 }
 </style>
