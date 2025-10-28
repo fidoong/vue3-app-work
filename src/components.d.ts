@@ -58,6 +58,7 @@ declare module 'vue' {
     DetailGroup: typeof import('./components/business/SchemaDetail/components/DetailGroup.vue')['default']
     DetailItem: typeof import('./components/business/SchemaDetail/components/DetailItem.vue')['default']
     DropdownButton: typeof import('./components/base/DropdownButton/DropdownButton.vue')['default']
+    ErrorBoundary: typeof import('./components/base/ErrorBoundary/ErrorBoundary.vue')['default']
     LayoutBreadcrumb: typeof import('./components/layout/AppLayout/widgets/LayoutBreadcrumb.vue')['default']
     LayoutHeader: typeof import('./components/layout/AppLayout/widgets/LayoutHeader.vue')['default']
     LayoutLogo: typeof import('./components/layout/AppLayout/widgets/LayoutLogo.vue')['default']

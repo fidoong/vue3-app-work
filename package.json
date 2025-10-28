@@ -20,6 +20,7 @@
     "sizecheck": "npx vite-bundle-visualizer"
   },
   "dependencies": {
+    "@sentry/vue": "catalog:frontend",
     "@tanstack/vue-query": "catalog:frontend",
     "@unocss/reset": "catalog:frontend",
     "ant-design-vue": "catalog:frontend",
@@ -29,7 +30,8 @@
     "pinia": "catalog:frontend",
     "vue": "catalog:frontend",
     "vue-i18n": "catalog:frontend",
-    "vue-router": "catalog:frontend"
+    "vue-router": "catalog:frontend",
+    "web-vitals": "catalog:frontend"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:dev",

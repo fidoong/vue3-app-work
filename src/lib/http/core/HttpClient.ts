@@ -8,6 +8,7 @@ import type {
 } from '../types/index'
 import { message } from 'ant-design-vue'
 import axios from 'axios'
+import { PerformanceMonitor } from '../../performance'
 import { RequestLogger } from '../plugins/logger'
 import { ErrorHandler } from './ErrorHandler'
 import { InterceptorManager } from './InterceptorManager'
@@ -92,6 +93,11 @@ export class HttpClient {
       async (config: InternalAxiosRequestConfig) => {
         const customConfig = config as InternalAxiosRequestConfig & RequestConfig
 
+        // 性能监控：记录请求开始时间
+        if (config.url) {
+          PerformanceMonitor.mark(`api-start-${config.url}`)
+        }
+
         // 处理重复请求
         if (customConfig.cancelDuplicated !== false && this.config.cancelDuplicated) {
           this.addPendingRequest(config)
@@ -128,6 +134,21 @@ export class HttpClient {
       (response: AxiosResponse<ApiResponse>) => {
         const customConfig = response.config as RequestConfig
 
+        // 性能监控：记录 API 请求性能
+        if (response.config.url) {
+          const duration = PerformanceMonitor.measure(
+            `api-${response.config.url}`,
+            `api-start-${response.config.url}`,
+          )
+          PerformanceMonitor.trackApiCall(
+            response.config.url,
+            response.config.method?.toUpperCase() || 'GET',
+            duration,
+            response.status,
+            JSON.stringify(response.data).length,
+          )
+        }
+
         // 移除待处理请求
         this.removePendingRequest(response.config)
 
@@ -145,6 +166,20 @@ export class HttpClient {
       },
       (error) => {
         const customConfig = error.config as RequestConfig
+
+        // 性能监控：记录失败的请求
+        if (error.config?.url) {
+          const duration = PerformanceMonitor.measure(
+            `api-${error.config.url}`,
+            `api-start-${error.config.url}`,
+          )
+          PerformanceMonitor.trackApiCall(
+            error.config.url,
+            error.config.method?.toUpperCase() || 'GET',
+            duration,
+            error.response?.status || 0,
+          )
+        }
 
         // 移除待处理请求
         if (error.config) {
