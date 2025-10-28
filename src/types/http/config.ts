@@ -23,7 +23,12 @@ export interface RequestConfig extends AxiosRequestConfig {
   cancelDuplicated?: boolean
   /** 自定义错误处理 */
   customErrorHandler?: (error: any) => void
-  /** 请求元数据 */
+  /** 请求元数据（用于性能监控等） */
+  metadata?: {
+    startTime?: number
+    [key: string]: any
+  }
+  /** 请求元数据（向后兼容） */
   meta?: Record<string, any>
 }
 

@@ -14,11 +14,52 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
 import 'vitest/config'
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
+  },
+
+  // 构建优化
+  build: {
+    // 代码分割
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vue 核心
+          'vue-vendor': ['vue', 'vue-router', 'pinia', 'vue-i18n'],
+          // UI 组件库
+          'ui-vendor': ['ant-design-vue'],
+          // 工具库
+          'utils-vendor': ['axios', '@tanstack/vue-query'],
+          // 图标
+          'icons': ['@iconify-json/carbon'],
+        },
+      },
+    },
+    // 提高警告阈值
+    chunkSizeWarningLimit: 1000,
+    // 压缩选项
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+      },
+    },
+  },
+
+  // 优化依赖预构建
+  optimizeDeps: {
+    include: [
+      'vue',
+      'vue-router',
+      'pinia',
+      'axios',
+      '@tanstack/vue-query',
+      'ant-design-vue',
+    ],
   },
 
   plugins: [

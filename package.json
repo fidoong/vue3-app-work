@@ -11,7 +11,10 @@
     "test": "vitest",
     "test:e2e": "cypress open",
     "test:unit": "vitest",
+    "test:coverage": "vitest --coverage",
     "typecheck": "vue-tsc --noEmit",
+    "check": "pnpm lint && pnpm typecheck && pnpm test:unit --run",
+    "analyze": "vite-bundle-visualizer",
     "up": "taze major -I",
     "postinstall": "npx simple-git-hooks",
     "sizecheck": "npx vite-bundle-visualizer"

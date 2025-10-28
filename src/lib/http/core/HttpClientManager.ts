@@ -2,7 +2,7 @@
  * HTTP 客户端管理器
  * 用于管理多个 HTTP 客户端实例
  */
-import type { HttpClientConfig } from '../types'
+import type { HttpClientConfig } from '../types/index'
 import { HttpClient } from './HttpClient'
 
 export class HttpClientManager {
