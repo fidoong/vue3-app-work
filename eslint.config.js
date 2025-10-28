@@ -15,6 +15,24 @@ export default antfu(
     ],
   },
   {
+    // 全局规则
+    rules: {
+      // 允许在开发环境使用 console.log/info
+      'no-console': ['error', {
+        allow: ['warn', 'error', 'info'],
+      }],
+      // Node.js 全局变量
+      'node/prefer-global/process': 'off',
+    },
+  },
+  {
+    // 脚本文件允许使用 console
+    files: ['scripts/**/*.ts', 'scripts/**/*.js'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  {
     // Vue 组件格式化规则
     files: ['**/*.vue'],
     rules: {

@@ -1,10 +1,9 @@
 {
-  // 编辑器配置
-  "editor.formatOnSave": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  // ESLint 配置
+  "editor.formatOnSave": false,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -12,26 +11,18 @@
     "typescriptreact",
     "vue"
   ],
-  // 禁用其他格式化工具
-  "prettier.enable": false,
-  "vetur.validation.template": false,
-  // 文件关联 - 禁用默认格式化，只使用 ESLint
-  "[vue]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": "Vue.volar"
+  "files.associations": {
+    "*.css": "css",
+    "*.scss": "scss"
   },
-  "[typescript]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+  // Vite 构建优化提示
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": false
   },
-  "[javascript]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[json]": {
-    "editor.formatOnSave": false
-  },
-  "[jsonc]": {
-    "editor.formatOnSave": false
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.git": true
   }
 }

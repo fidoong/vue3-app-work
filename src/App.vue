@@ -38,11 +38,9 @@ onMounted(() => {
       const componentStats = PerformanceMonitor.getComponentStats()
 
       if (apiStats) {
-        // eslint-disable-next-line no-console
         console.info('[Performance] API Stats:', apiStats)
       }
       if (componentStats.length > 0) {
-        // eslint-disable-next-line no-console
         console.info('[Performance] Component Stats:', componentStats)
       }
     }, 5000)

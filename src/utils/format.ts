@@ -13,6 +13,9 @@
  * formatDate('2024-10-28', 'MM/DD/YYYY') // '10/28/2024'
  */
 export function formatDate(date: Date | string | number, format = 'YYYY-MM-DD'): string {
+  if (date == null)
+    return ''
+
   const d = new Date(date)
   if (Number.isNaN(d.getTime()))
     return ''
